@@ -1,31 +1,62 @@
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import ProTip from './components/ProTip';
+import { Route, Routes, useNavigate } from "react-router-dom";
+import ButtomNav from "./components/BottomNav";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import { ProtectedRoute } from "./hoc/ProtectedRoutes";
+import { useEffect } from "react";
 
-function Copyright() {
+const App = () => {
+  const navigate = useNavigate();
+  const user = undefined;
+  // const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard", { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
   return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}.
-    </Typography>
+    <>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route
+          path="/program"
+          element={
+            <ProtectedRoute>
+              <Program />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/camera"
+          element={
+            <ProtectedRoute>
+              <CameraComponent />
+            </ProtectedRoute>
+          }
+        /> */}
+      </Routes>
+      <ButtomNav />
+    </>
   );
 }
 
-export default function App() {
-  return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Material UI Vite.js example in TypeScript
-        </Typography>
-        <ProTip />
-        <Copyright />
-      </Box>
-    </Container>
-  );
-}
+export default App;
