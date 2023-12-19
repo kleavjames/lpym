@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Categories } from "../constants/category";
 
 const ButtomNav = () => {
   const navigate = useNavigate();
@@ -27,27 +28,27 @@ const ButtomNav = () => {
         <BottomNavigationAction
           onClick={() => navigate("/elementary")}
           value="/elementary"
-          label='ELEMENTARY'
+          label={Categories.ELEM}
         />
         <BottomNavigationAction
           onClick={() => navigate("/highschool")}
           value="/highschool"
-          label='HIGH SCHOOL'
+          label={Categories.HS}
         />
         <BottomNavigationAction
           onClick={() => navigate("/senior")}
           value="/senior"
-          label='SENIOR'
+          label={Categories.SENIOR}
         />
         <BottomNavigationAction
           onClick={() => navigate("/college")}
           value="/college"
-          label='COLLEGE'
+          label={Categories.COL}
         />
         <BottomNavigationAction
           onClick={() => navigate("/community")}
           value="/community"
-          label='COMMUNITY'
+          label={Categories.COM}
         />
       </BottomNavigation>
     </Paper>

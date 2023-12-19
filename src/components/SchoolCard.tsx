@@ -14,7 +14,7 @@ const SchoolCard = () => {
           <Stack direction="row" spacing={1} alignItems='center' justifyContent='space-between'>
             <Typography variant='h4' sx={{ pb: 1, fontWeight: 'bold'}}>Visitors: 52</Typography>
             <Stack direction='row' spacing={1} justifyContent='flex-end'>
-              <TextField size='small' id="visitor-text-field" label="Visitor" variant="outlined" sx={{width: 100}} />
+              <TextField size='small' id="visitor-text-field" label="Visitor" variant="outlined" margin='dense' sx={{width: 100}} />
               <Button size='small' variant='contained' disableElevation>Add</Button>
               <Button size='small' variant='contained' disableElevation  color='error'>Remove</Button>
             </Stack>
