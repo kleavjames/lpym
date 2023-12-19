@@ -13,14 +13,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Categories } from "../constants/category";
 import { AddSchool } from "../types/school";
-import { CategoryNames } from "../types/category";
+import { Category, CategoryNames } from "../types/category";
+import { useSchool } from "../hooks/useSchool";
+import { nanoid } from "nanoid";
 
 const initState = {
   name: "",
   nickName: "",
   categories: {
     [CategoryNames.ELEMENTARY]: false,
-    [CategoryNames.HIGHSCHOOL]: false,
+    [CategoryNames.JUNIORHIGH]: false,
     [CategoryNames.SENIORHIGH]: false,
     [CategoryNames.COLLEGE]: false,
     [CategoryNames.COMMUNITY]: false,
@@ -29,6 +31,7 @@ const initState = {
 
 function TopBar() {
   const location = useLocation();
+  const {addSchool} = useSchool();
   const [open, setOpen] = useState(false);
   const [schoolToAdd, setSchoolToAdd] = useState<AddSchool>(initState);
 
@@ -52,7 +55,6 @@ function TopBar() {
   };
 
   const handleClose = () => {
-    console.log(schoolToAdd);
     setSchoolToAdd(initState);
     setOpen(false);
   };
@@ -74,6 +76,26 @@ function TopBar() {
       [event.target.name]: event.target.value,
     });
   };
+
+  const onHandleAddSchool = async () => {
+    const categorySchool = [];
+    const {name, nickName, categories} = schoolToAdd;
+
+    if (categories.elementary) categorySchool.push(Category.ELEMENTARY)
+    if (categories.juniorhigh) categorySchool.push(Category.JUNIORHIGH)
+    if (categories.seniorhigh) categorySchool.push(Category.SENIORHIGH)
+    if (categories.college) categorySchool.push(Category.COLLEGE)
+    if (categories.community) categorySchool.push(Category.COMMUNITY)
+
+    await addSchool({
+      id: nanoid(),
+      name,
+      nickName: nickName.toLowerCase(),
+      categories: categorySchool
+    })
+
+    handleClose();
+  }
 
   return (
     <>
@@ -113,9 +135,9 @@ function TopBar() {
               label={Categories.ELEM}
             />
             <FormControlLabel
-              name={CategoryNames.HIGHSCHOOL}
+              name={CategoryNames.JUNIORHIGH}
               control={<Checkbox onChange={handleChange} />}
-              label={Categories.HS}
+              label={Categories.JUNIOR}
             />
             <FormControlLabel
               name={CategoryNames.SENIORHIGH}
@@ -135,7 +157,7 @@ function TopBar() {
           </FormGroup>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Add</Button>
+          <Button onClick={onHandleAddSchool}>Add</Button>
         </DialogActions>
       </Dialog>
       <Stack

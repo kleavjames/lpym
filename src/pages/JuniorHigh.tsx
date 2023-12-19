@@ -5,19 +5,19 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 const JuniorHigh = () => {
-  const {elementary} = useSchool();
+  const {juniorHighSchools} = useSchool();
 
-  if (!elementary.length) {
+  if (!juniorHighSchools.length) {
     return <Box>
-      <Typography>No schools added for elementary</Typography>
+      <Typography>No schools added for Junior High</Typography>
     </Box>
   }
 
   return (
     <Stack spacing={2}>
-      {elementary.map(elem => (
-        <Box key={elem.id}>
-          <SchoolCard name={elem.name} nickName={elem.nickName} />
+      {juniorHighSchools.map(juniorHs => (
+        <Box key={juniorHs.id}>
+          <SchoolCard name={juniorHs.name} nickName={juniorHs.nickName} />
         </Box>
       ))}
     </Stack>

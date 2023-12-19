@@ -3,13 +3,13 @@ import { ProtectedRoute } from "./hoc/ProtectedRoutes";
 import { useEffect } from "react";
 import ButtomNav from "./components/BottomNav";
 import Elementary from "./pages/Elementary";
-import HighSchool from "./pages/HighSchool";
 import SeniorHigh from "./pages/SeniorHigh";
 import College from "./pages/College";
 import CommunityYouth from "./pages/CommunityYouth";
 import Login from "./pages/Login";
 import TopBar from "./components/TopBar";
 import Box from "@mui/material/Box";
+import JuniorHigh from "./pages/JuniorHigh";
 
 const App = () => {
   const navigate = useNavigate();
@@ -37,10 +37,10 @@ const App = () => {
           }
         />
         <Route
-          path="/highschool"
+          path="/junior"
           element={
             <ProtectedRoute>
-              <HighSchool />
+              <JuniorHigh />
             </ProtectedRoute>
           }
         />

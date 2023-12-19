@@ -1,6 +1,6 @@
 export enum Category {
   ELEMENTARY = 1,
-  HIGHSCHOOL = 2,
+  JUNIORHIGH = 2,
   SENIORHIGH = 3,
   COLLEGE = 4,
   COMMUNITY = 5, 
@@ -8,7 +8,7 @@ export enum Category {
 
 export enum CategoryNames {
   ELEMENTARY = 'elementary',
-  HIGHSCHOOL = 'highschool',
+  JUNIORHIGH = 'juniorhigh',
   SENIORHIGH = 'seniorhigh',
   COLLEGE = 'college',
   COMMUNITY = 'community', 

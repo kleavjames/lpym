@@ -31,9 +31,9 @@ const ButtomNav = () => {
           label={Categories.ELEM}
         />
         <BottomNavigationAction
-          onClick={() => navigate("/highschool")}
+          onClick={() => navigate("/junior")}
           value="/highschool"
-          label={Categories.HS}
+          label={Categories.JUNIOR}
         />
         <BottomNavigationAction
           onClick={() => navigate("/senior")}

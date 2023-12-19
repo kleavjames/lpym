@@ -1,6 +1,6 @@
 export const Categories = {
   ELEM: 'Elementary',
-  HS: 'High School',
+  JUNIOR: 'Junior High',
   SENIOR: 'Senior High',
   COL: 'College',
   COM: 'Community',
