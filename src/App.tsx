@@ -1,6 +1,4 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
-import ButtomNav from "./components/BottomNav";
-import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { ProtectedRoute } from "./hoc/ProtectedRoutes";
 import { useEffect } from "react";
@@ -20,7 +18,7 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Home />} />
         <Route
           path="/home"
           element={
@@ -54,7 +52,7 @@ const App = () => {
           }
         /> */}
       </Routes>
-      <ButtomNav />
+      {/* <ButtomNav /> */}
     </>
   );
 }
