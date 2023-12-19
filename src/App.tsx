@@ -10,9 +10,11 @@ import Login from "./pages/Login";
 import TopBar from "./components/TopBar";
 import Box from "@mui/material/Box";
 import JuniorHigh from "./pages/JuniorHigh";
+import { useSchool } from "./hooks/useSchool";
 
 const App = () => {
   const navigate = useNavigate();
+  const {elementary, juniorHighSchools, seniorHighSchools, colleges, communities} = useSchool();
   const user = true;
   // const [user] = useAuthState(auth);
 
@@ -32,7 +34,7 @@ const App = () => {
           path="/elementary"
           element={
             <ProtectedRoute>
-              <Elementary />
+              <Elementary schools={elementary} />
             </ProtectedRoute>
           }
         />
@@ -40,7 +42,7 @@ const App = () => {
           path="/junior"
           element={
             <ProtectedRoute>
-              <JuniorHigh />
+              <JuniorHigh schools={juniorHighSchools} />
             </ProtectedRoute>
           }
         />
@@ -48,7 +50,7 @@ const App = () => {
           path="/senior"
           element={
             <ProtectedRoute>
-              <SeniorHigh />
+              <SeniorHigh schools={seniorHighSchools} />
             </ProtectedRoute>
           }
         />
@@ -56,7 +58,7 @@ const App = () => {
           path="/college"
           element={
             <ProtectedRoute>
-              <College />
+              <College schools={colleges} />
             </ProtectedRoute>
           }
         />
@@ -64,7 +66,7 @@ const App = () => {
           path="/community"
           element={
             <ProtectedRoute>
-              <CommunityYouth />
+              <CommunityYouth schools={communities} />
             </ProtectedRoute>
           }
         />

@@ -1,21 +1,24 @@
 import SchoolCard from "../components/SchoolCard"
 import Stack from "@mui/material/Stack"
-import { useSchool } from "../hooks/useSchool"
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { School } from "../types/school";
+import { FC } from "react";
 
-const SeniorHigh = () => {
-  const {seniorHighSchools} = useSchool();
+type SeniorHighProp = {
+  schools: School[]
+}
 
-  if (!seniorHighSchools.length) {
+const SeniorHigh: FC<SeniorHighProp> = ({schools}) => {
+  if (!schools.length) {
     return <Box>
       <Typography>No schools added for Senior High</Typography>
     </Box>
   }
 
   return (
-    <Stack spacing={2}>
-      {seniorHighSchools.map(seniorHs => (
+    <Stack spacing={2} sx={{ pb: 10}}>
+      {schools.map(seniorHs => (
         <Box key={seniorHs.id}>
           <SchoolCard name={seniorHs.name} nickName={seniorHs.nickName} />
         </Box>

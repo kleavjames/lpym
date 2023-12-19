@@ -22,7 +22,7 @@ const SchoolCard: FC<SchoolCard> = ({name}) => {
             <Stack direction='row' spacing={1} justifyContent='flex-end'>
               <TextField size='small' id="visitor-text-field" label="Visitor" variant="outlined" margin='dense' sx={{width: 100}} />
               <Button size='small' variant='contained' disableElevation>Add</Button>
-              <Button size='small' variant='contained' disableElevation  color='error'>Remove</Button>
+              <Button size='small' variant='contained' disableElevation  color='error'>Minus</Button>
             </Stack>
           </Stack>
         </Box>

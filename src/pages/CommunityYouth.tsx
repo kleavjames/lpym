@@ -1,21 +1,24 @@
 import SchoolCard from "../components/SchoolCard"
 import Stack from "@mui/material/Stack"
-import { useSchool } from "../hooks/useSchool"
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { FC } from "react";
+import { School } from "../types/school";
 
-const CommunityYouth = () => {
-  const {communities} = useSchool();
+type CommunityYouthProp = {
+  schools: School[]
+}
 
-  if (!communities.length) {
+const CommunityYouth: FC<CommunityYouthProp> = ({schools}) => {
+  if (!schools.length) {
     return <Box>
       <Typography>No youths added yet</Typography>
     </Box>
   }
 
   return (
-    <Stack spacing={2}>
-      {communities.map(comm => (
+    <Stack spacing={2} sx={{ pb: 10}}>
+      {schools.map(comm => (
         <Box key={comm.id}>
           <SchoolCard name={comm.name} nickName={comm.nickName} />
         </Box>

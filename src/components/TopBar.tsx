@@ -170,7 +170,6 @@ function TopBar() {
           {category}
         </Typography>
         <Button
-          size="small"
           variant="contained"
           disableElevation
           onClick={handleClickOpen}

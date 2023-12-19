@@ -17,6 +17,7 @@ const ButtomNav = () => {
         margin: "auto",
         height: 73,
         pt: 1.2,
+        zIndex: 100,
       }}
       elevation={3}
     >
@@ -32,7 +33,7 @@ const ButtomNav = () => {
         />
         <BottomNavigationAction
           onClick={() => navigate("/junior")}
-          value="/highschool"
+          value="/junior"
           label={Categories.JUNIOR}
         />
         <BottomNavigationAction
