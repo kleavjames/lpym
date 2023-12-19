@@ -1,8 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import StarIcon from "@mui/icons-material/Star";
-import CelebrationIcon from "@mui/icons-material/Celebration";
-import PersonIcon from "@mui/icons-material/Person";
-import CameraIcon from "@mui/icons-material/CameraAlt";
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -17,7 +13,6 @@ const ButtomNav = () => {
         bottom: 0,
         left: 0,
         right: 0,
-        maxWidth: 693,
         margin: "auto",
         height: 73,
         pt: 1.2,
@@ -26,43 +21,33 @@ const ButtomNav = () => {
     >
       <BottomNavigation
         sx={{ py: 2 }}
+        showLabels
         value={location.pathname}
       >
         <BottomNavigationAction
-          onClick={() => navigate("/dashboard")}
-          value="/dashboard"
-          icon={
-            <StarIcon
-              sx={{ height: 19, width: 20 }}
-            />
-          }
+          onClick={() => navigate("/elementary")}
+          value="/elementary"
+          label='ELEMENTARY'
         />
         <BottomNavigationAction
-          onClick={() => navigate("/program")}
-          value="/program"
-          icon={
-            <CelebrationIcon
-              sx={{ height: 20.5, width: 21.55 }}
-            />
-          }
+          onClick={() => navigate("/highschool")}
+          value="/highschool"
+          label='HIGH SCHOOL'
         />
         <BottomNavigationAction
-          onClick={() => {}}
-          value="/camera"
-          icon={
-            <CameraIcon
-              sx={{ height: 18, width: 20 }}
-            />
-          }
+          onClick={() => navigate("/senior")}
+          value="/senior"
+          label='SENIOR'
         />
         <BottomNavigationAction
-          onClick={() => navigate("/profile")}
-          value="/profile"
-          icon={
-            <PersonIcon
-              sx={{ height: 16, width: 16 }}
-            />
-          }
+          onClick={() => navigate("/college")}
+          value="/college"
+          label='COLLEGE'
+        />
+        <BottomNavigationAction
+          onClick={() => navigate("/community")}
+          value="/community"
+          label='COMMUNITY'
         />
       </BottomNavigation>
     </Paper>
