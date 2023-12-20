@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { CategoryNames } from "../types/category";
 import { School } from "../types/school";
-import { loadSchoolsThunk } from "./schoolThunks";
+import { addSchoolThunk, loadSchoolsThunk } from "./schoolThunks";
 
 type Visitors = {
   [id: string]: {
@@ -74,7 +74,10 @@ const visitorSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(loadSchoolsThunk.fulfilled, (state, { payload }) => {
       state.schools = payload || [];
-    });
+    }),
+    builder.addCase(addSchoolThunk.fulfilled, (state, { payload }) => {
+      state.schools.push(payload);
+    })
   },
 });
 

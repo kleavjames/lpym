@@ -2,11 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 import { School } from "../types/school";
 import { db } from "../services/firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 
 export const loadSchoolsThunk = createAsyncThunk<
   School[],
-  undefined,
+  void,
   {state: RootState}
 >('schools/loadSchoolsThunk', async () => {
   const schools: School[] = [];
@@ -18,4 +18,22 @@ export const loadSchoolsThunk = createAsyncThunk<
   })
 
   return schools;
+});
+
+export const addSchoolThunk = createAsyncThunk<
+  School,
+  School,
+  {state: RootState}
+>('schools/addSchoolThunk', async (school) => {
+  try {
+    const schoolRef = collection(db, "schools");
+    await setDoc(doc(schoolRef, school.nickName), {
+      ...school,
+    });
+
+    return school;
+  } catch (error) {
+    alert('Error on adding the new school');
+    throw new Error('Error on adding the new school')
+  }
 });

@@ -14,8 +14,9 @@ import Checkbox from "@mui/material/Checkbox";
 import { Categories } from "../constants/category";
 import { AddSchool } from "../types/school";
 import { Category, CategoryNames } from "../types/category";
-import { useSchool } from "../hooks/useSchool";
 import { nanoid } from "nanoid";
+import { useAppDispatch } from "../redux/store";
+import { addSchoolThunk } from "../redux/schoolThunks";
 
 const initState = {
   name: "",
@@ -31,7 +32,7 @@ const initState = {
 
 function TopBar() {
   const location = useLocation();
-  const {addSchool} = useSchool();
+  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [schoolToAdd, setSchoolToAdd] = useState<AddSchool>(initState);
 
@@ -87,12 +88,12 @@ function TopBar() {
     if (categories.college) categorySchool.push(Category.COLLEGE)
     if (categories.community) categorySchool.push(Category.COMMUNITY)
 
-    await addSchool({
+    await dispatch(addSchoolThunk({
       id: nanoid(),
       name,
       nickName: nickName.toLowerCase(),
       categories: categorySchool
-    })
+    }))
 
     handleClose();
   }
@@ -100,14 +101,14 @@ function TopBar() {
   return (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add School</DialogTitle>
+        <DialogTitle>Register</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
             size="small"
             id="name"
-            label="School name"
+            label="School name / Company / Community"
             type="email"
             fullWidth
             name="name"
@@ -157,7 +158,8 @@ function TopBar() {
           </FormGroup>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onHandleAddSchool}>Add</Button>
+          <Button onClick={onHandleAddSchool}>Register</Button>
+          <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
       <Stack
@@ -175,7 +177,7 @@ function TopBar() {
           onClick={handleClickOpen}
           color="secondary"
         >
-          Add School
+          Register
         </Button>
       </Stack>
     </>
