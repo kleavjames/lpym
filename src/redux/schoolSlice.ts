@@ -10,28 +10,33 @@ type Visitors = {
     [CategoryNames.SENIORHIGH]?: number;
     [CategoryNames.COLLEGE]?: number;
     [CategoryNames.COMMUNITY]?: number;
-  }
-}
+  };
+};
 
 type State = {
   visitors: Visitors;
   schools: School[];
-}
+};
 
 const initialState: State = {
   visitors: {},
   schools: [],
-}
+};
 
 const visitorSlice = createSlice({
-  name: 'visitorSlice',
+  name: "visitorSlice",
   initialState,
   reducers: {
-    addVisitor: (state, {payload}: PayloadAction<{
-      id: string;
-      category: CategoryNames,
-      count: number
-    }>) => {
+    addVisitor: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        id: string;
+        category: CategoryNames;
+        count: number;
+      }>
+    ) => {
       if (state.visitors?.[payload.id]?.[payload.category]) {
         state.visitors![payload.id][payload.category]! += payload.count;
         return;
@@ -39,34 +44,39 @@ const visitorSlice = createSlice({
 
       state.visitors![payload.id] = {
         ...state.visitors![payload.id],
-        [payload.category]: payload.count
-      }
+        [payload.category]: payload.count,
+      };
     },
-    subtractVisitor: (state, {payload}: PayloadAction<{
-      id: string;
-      category: CategoryNames,
-      count: number
-    }>) => {
-      if (state.visitors?.[payload.id]?.[payload.category]) {
+    subtractVisitor: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        id: string;
+        category: CategoryNames;
+        count: number;
+      }>
+    ) => {
+      if (
+        state.visitors?.[payload.id]?.[payload.category] &&
+        state.visitors[payload.id][payload.category]! > payload.count
+      ) {
         state.visitors![payload.id][payload.category]! -= payload.count;
         return;
-      }
-
-      state.visitors![payload.id] = {
-        ...state.visitors![payload.id],
-        [payload.category]: payload.count
+      } else if (
+        state.visitors?.[payload.id]?.[payload.category] &&
+        state.visitors[payload.id][payload.category]! <= payload.count
+      ) {
+        state.visitors![payload.id][payload.category] = 0;
       }
     },
   },
   extraReducers(builder) {
-    builder.addCase(
-      loadSchoolsThunk.fulfilled,
-      (state, {payload}) => {
-        state.schools = payload || [];
-      }
-    )
-  }
-})
+    builder.addCase(loadSchoolsThunk.fulfilled, (state, { payload }) => {
+      state.schools = payload || [];
+    });
+  },
+});
 
-export const {addVisitor, subtractVisitor} = visitorSlice.actions
-export default visitorSlice.reducer
+export const { addVisitor, subtractVisitor } = visitorSlice.actions;
+export default visitorSlice.reducer;
