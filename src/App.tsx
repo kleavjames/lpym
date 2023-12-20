@@ -11,12 +11,19 @@ import TopBar from "./components/TopBar";
 import Box from "@mui/material/Box";
 import JuniorHigh from "./pages/JuniorHigh";
 import { useSchool } from "./hooks/useSchool";
+import { useAppDispatch } from "./redux/store";
+import { loadSchoolsThunk } from "./redux/schoolThunks";
 
 const App = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const {elementary, juniorHighSchools, seniorHighSchools, colleges, communities} = useSchool();
   const user = true;
   // const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    dispatch(loadSchoolsThunk());
+  }, [dispatch])
 
   useEffect(() => {
     if (user) {

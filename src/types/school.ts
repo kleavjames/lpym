@@ -17,4 +17,5 @@ export type School = {
   name: string;
   nickName: string;
   categories: Category[]
+  visitors?: number;
 }

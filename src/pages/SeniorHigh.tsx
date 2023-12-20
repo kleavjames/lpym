@@ -1,30 +1,52 @@
-import SchoolCard from "../components/SchoolCard"
-import Stack from "@mui/material/Stack"
+import SchoolCard from "../components/SchoolCard";
+import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { School } from "../types/school";
 import { FC } from "react";
+import { useDispatch } from "react-redux";
+import { CategoryNames } from "../types/category";
+import { addVisitor, subtractVisitor } from "../redux/schoolSlice";
+import { useAppSelector } from "../redux/store";
+import { selectSeniorHighs } from "../redux/schoolSelectors";
 
-type SeniorHighProp = {
-  schools: School[]
-}
+const SeniorHigh: FC = () => {
+  const dispatch = useDispatch();
+  const schools = useAppSelector(selectSeniorHighs);
 
-const SeniorHigh: FC<SeniorHighProp> = ({schools}) => {
+  const onAddChange = (id: string, category: CategoryNames, count: number) => {
+    dispatch(addVisitor({ id, category, count }));
+  };
+
+  const onSubtractChange = (
+    id: string,
+    category: CategoryNames,
+    count: number
+  ) => {
+    dispatch(subtractVisitor({ id, category, count }));
+  };
+
   if (!schools.length) {
-    return <Box>
-      <Typography>No schools added for Senior High</Typography>
-    </Box>
+    return (
+      <Box>
+        <Typography>No schools added for Senior High</Typography>
+      </Box>
+    );
   }
 
   return (
-    <Stack spacing={2} sx={{ pb: 10}}>
-      {schools.map(seniorHs => (
+    <Stack spacing={2} sx={{ pb: 10 }}>
+      {schools.map((seniorHs) => (
         <Box key={seniorHs.id}>
-          <SchoolCard name={seniorHs.name} nickName={seniorHs.nickName} />
+          <SchoolCard
+            visitor={seniorHs}
+            onAdd={onAddChange}
+            category={CategoryNames.SENIORHIGH}
+            onSubtract={onSubtractChange}
+          />
         </Box>
       ))}
     </Stack>
-  )
-}
+  );
+};
 
-export default SeniorHigh
+export default SeniorHigh;
