@@ -10,14 +10,12 @@ import Login from "./pages/Login";
 import TopBar from "./components/TopBar";
 import Box from "@mui/material/Box";
 import JuniorHigh from "./pages/JuniorHigh";
-import { useSchool } from "./hooks/useSchool";
 import { useAppDispatch } from "./redux/store";
 import { loadSchoolsThunk } from "./redux/schoolThunks";
 
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const {elementary, juniorHighSchools, seniorHighSchools, colleges, communities} = useSchool();
   const user = true;
   // const [user] = useAuthState(auth);
 
@@ -41,7 +39,7 @@ const App = () => {
           path="/elementary"
           element={
             <ProtectedRoute>
-              <Elementary schools={elementary} />
+              <Elementary />
             </ProtectedRoute>
           }
         />
@@ -49,7 +47,7 @@ const App = () => {
           path="/junior"
           element={
             <ProtectedRoute>
-              <JuniorHigh schools={juniorHighSchools} />
+              <JuniorHigh />
             </ProtectedRoute>
           }
         />
@@ -57,7 +55,7 @@ const App = () => {
           path="/senior"
           element={
             <ProtectedRoute>
-              <SeniorHigh schools={seniorHighSchools} />
+              <SeniorHigh />
             </ProtectedRoute>
           }
         />
@@ -65,7 +63,7 @@ const App = () => {
           path="/college"
           element={
             <ProtectedRoute>
-              <College schools={colleges} />
+              <College />
             </ProtectedRoute>
           }
         />
@@ -73,7 +71,7 @@ const App = () => {
           path="/community"
           element={
             <ProtectedRoute>
-              <CommunityYouth schools={communities} />
+              <CommunityYouth />
             </ProtectedRoute>
           }
         />
