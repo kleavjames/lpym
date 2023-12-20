@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Categories } from "../constants/category";
