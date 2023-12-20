@@ -166,13 +166,14 @@ function TopBar() {
         alignItems="center"
         sx={{ pb: 2 }}
       >
-        <Typography variant="h4" fontWeight="bold" color="primary">
+        <Typography variant="h4" fontWeight="bold" color="secondary">
           {category}
         </Typography>
         <Button
           variant="contained"
           disableElevation
           onClick={handleClickOpen}
+          color="secondary"
         >
           Add School
         </Button>

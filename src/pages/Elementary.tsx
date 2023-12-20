@@ -13,16 +13,20 @@ const Elementary: FC = () => {
   const dispatch = useDispatch();
   const schools = useAppSelector(selectElementary);
 
-  const onAddChange = (id: string, category: CategoryNames, count: number) => {
-    dispatch(addVisitor({ id, category, count }));
+  const onAddChange = (id: string, category: CategoryNames, count: string) => {
+    if (count) {
+      dispatch(addVisitor({ id, category, count: +count }));
+    }
   };
 
   const onSubtractChange = (
     id: string,
     category: CategoryNames,
-    count: number
+    count: string
   ) => {
-    dispatch(subtractVisitor({ id, category, count }));
+    if (count) {
+      dispatch(subtractVisitor({ id, category, count: +count }));
+    }
   };
 
   if (!schools.length) {
@@ -33,9 +37,10 @@ const Elementary: FC = () => {
 
   return (
     <Stack spacing={2} sx={{ pb: 10}}>
-      {schools.map(elem => (
+      {schools.map((elem, i) => (
         <Box key={elem.id}>
           <SchoolCard
+            ranking={i}
             visitor={elem}
             onAdd={onAddChange}
             category={CategoryNames.ELEMENTARY}
