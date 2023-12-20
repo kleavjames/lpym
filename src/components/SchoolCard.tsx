@@ -57,7 +57,10 @@ const SchoolCard: FC<SchoolCard> = ({ visitor, onAdd, category, onSubtract }) =>
                 size="small"
                 variant="contained"
                 disableElevation
-                onClick={() => onAdd(visitor.nickName, category, count)}
+                onClick={() => {
+                  onAdd(visitor.nickName, category, count);
+                  setCount(1);
+                }}
               >
                 Add
               </Button>
@@ -66,7 +69,10 @@ const SchoolCard: FC<SchoolCard> = ({ visitor, onAdd, category, onSubtract }) =>
                 variant="contained"
                 disableElevation
                 color="error"
-                onClick={() => onSubtract(visitor.id, category, count)}
+                onClick={() => {
+                  onSubtract(visitor.nickName, category, count);
+                  setCount(1);
+                }}
               >
                 Minus
               </Button>
