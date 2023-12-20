@@ -35,22 +35,26 @@ const SchoolCard: FC<SchoolCard> = ({
   return (
     <Paper elevation={3}>
       <Stack direction="row" alignItems="center">
-        <Typography
-            variant="h4"
-            fontWeight="bold"
-            sx={{ pl: 2, justifyContent: "center" }}
-            color='primary'
-          >
-          #
-        </Typography>
-        <Typography
-            variant="h2"
-            fontWeight="bold"
-            sx={{ alignItems: "center", justifyContent: "center" }}
-            color='primary'
-          >
-          {ranking + 1}
-        </Typography>
+        {visitor.visitors! > 0 ? (
+          <>
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              sx={{ pl: 2, justifyContent: "center" }}
+              color="primary"
+            >
+              #
+            </Typography>
+            <Typography
+              variant="h2"
+              fontWeight="bold"
+              sx={{ alignItems: "center", justifyContent: "center" }}
+              color="primary"
+            >
+              {ranking + 1}
+            </Typography>
+          </>
+        ) : null}
         <Box sx={{ flex: 1, p: 2 }}>
           <Typography variant="h5" sx={{ pb: 1, fontWeight: "bold" }}>
             {visitor.name}
