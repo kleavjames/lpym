@@ -1,5 +1,6 @@
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { Categories } from "../constants/category";
 
 const ButtomNav = () => {
@@ -49,6 +50,13 @@ const ButtomNav = () => {
           onClick={() => navigate("/community")}
           value="/community"
           label={Categories.COM}
+        />
+        <BottomNavigationAction
+          onClick={() => navigate("/results")}
+          value="/results"
+          icon={
+            <EmojiEventsIcon />
+          }
         />
       </BottomNavigation>
     </Paper>

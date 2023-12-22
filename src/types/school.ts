@@ -17,3 +17,12 @@ export type School = {
   categories: Category[]
   visitors?: number;
 }
+
+export type TotalSchools = {
+  totalVisitors: number;
+  totalElementary: number;
+  totalJuniorHigh: number;
+  totalSeniorHigh: number;
+  totalCollege: number;
+  totalCommunity: number;
+}

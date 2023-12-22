@@ -11,6 +11,7 @@ import TopBar from "./components/TopBar";
 import Box from "@mui/material/Box";
 import JuniorHigh from "./pages/JuniorHigh";
 import { useSchools } from "./hooks/useSchools";
+import Results from "./pages/Results";
 
 const App = () => {
   const {
@@ -22,6 +23,7 @@ const App = () => {
     addVisitor,
     subtractVisitor,
     addSchool,
+    visitorsCount,
   } = useSchools();
   const navigate = useNavigate();
   const user = true;
@@ -100,6 +102,21 @@ const App = () => {
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
                 updateSchool={addSchool}
+              />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/results"
+          element={
+            <ProtectedRoute>
+              <Results
+                visitorsCount={visitorsCount}
+                elementary={elementary}
+                juniorHighs={juniorHighs}
+                seniorHighs={seniorHighs}
+                colleges={colleges}
+                communities={communities}
               />
             </ProtectedRoute>
           }
