@@ -4,18 +4,18 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 import { CategoryNames } from "../types/category";
-import { useDispatch } from "react-redux";
-import { addVisitor, subtractVisitor } from "../redux/schoolSlice";
-import { useAppSelector } from "../redux/store";
-import { selectCommunities } from "../redux/schoolSelectors";
+import { School } from "../types/school";
 
-const CommunityYouth: FC = () => {
-  const dispatch = useDispatch();
-  const schools = useAppSelector(selectCommunities);
+type Props = {
+  schools: School[];
+  addVisitor: (id: string, category: CategoryNames, count: number) => void;
+  subtractVisitor: (id: string, category: CategoryNames, count: number) => void;
+}
 
+const CommunityYouth: FC<Props> = ({ schools, addVisitor, subtractVisitor }) => {
   const onAddChange = (id: string, category: CategoryNames, count: string) => {
     if (count) {
-      dispatch(addVisitor({ id, category, count: +count }));
+      addVisitor(id, category, +count);
     }
   };
 
@@ -25,7 +25,7 @@ const CommunityYouth: FC = () => {
     count: string
   ) => {
     if (count) {
-      dispatch(subtractVisitor({ id, category, count: +count }));
+      subtractVisitor(id, category, +count);
     }
   };
 
