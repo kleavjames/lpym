@@ -172,8 +172,8 @@ export const useSchools = () => {
           totalCollege += value?.[CategoryNames.COLLEGE];
         }
         if (value?.[CategoryNames.COMMUNITY]) {
-          totalVisitors += value?.[CategoryNames.ELEMENTARY]
-          totalCommunity += value?.[CategoryNames.ELEMENTARY]
+          totalVisitors += value?.[CategoryNames.COMMUNITY]
+          totalCommunity += value?.[CategoryNames.COMMUNITY]
         }
       })
     }
