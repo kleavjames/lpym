@@ -47,7 +47,7 @@ const App = () => {
                 schools={elementary}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
-                addSchool={addSchool}
+                updateSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -60,7 +60,7 @@ const App = () => {
                 schools={juniorHighs}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
-                addSchool={addSchool}
+                updateSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -73,7 +73,7 @@ const App = () => {
                 schools={seniorHighs}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
-                addSchool={addSchool}
+                updateSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -86,7 +86,7 @@ const App = () => {
                 schools={colleges}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
-                addSchool={addSchool}
+                updateSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -99,7 +99,7 @@ const App = () => {
                 schools={communities}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
-                addSchool={addSchool}
+                updateSchool={addSchool}
               />
             </ProtectedRoute>
           }

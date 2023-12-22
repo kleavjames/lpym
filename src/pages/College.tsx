@@ -10,10 +10,10 @@ type Props = {
   schools: School[];
   addVisitor: (id: string, category: CategoryNames, count: number) => void;
   subtractVisitor: (id: string, category: CategoryNames, count: number) => void;
-  addSchool: (data: School) => void;
+  updateSchool: (data: School) => void;
 }
 
-const College: FC<Props> = ({ schools, addVisitor, subtractVisitor, addSchool }) => {
+const College: FC<Props> = ({ schools, addVisitor, subtractVisitor, updateSchool }) => {
   const onAddChange = (id: string, category: CategoryNames, count: string) => {
     if (count) {
       addVisitor(id, category, +count);
@@ -31,7 +31,7 @@ const College: FC<Props> = ({ schools, addVisitor, subtractVisitor, addSchool })
   };
 
   const onUpdateSchool = async (school: School) => {
-    await addSchool(school)
+    await updateSchool(school)
   }
 
   if (!schools.length) {

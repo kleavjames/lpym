@@ -10,10 +10,10 @@ type Props = {
   schools: School[];
   addVisitor: (id: string, category: CategoryNames, count: number) => void;
   subtractVisitor: (id: string, category: CategoryNames, count: number) => void;
-  addSchool: (data: School) => void;
+  updateSchool: (data: School) => void;
 }
 
-const SeniorHigh: FC<Props> = ({schools, addVisitor, subtractVisitor}) => {
+const SeniorHigh: FC<Props> = ({schools, addVisitor, subtractVisitor, updateSchool}) => {
   const onAddChange = (id: string, category: CategoryNames, count: string) => {
     if (count) {
       addVisitor(id, category, +count);
@@ -29,6 +29,10 @@ const SeniorHigh: FC<Props> = ({schools, addVisitor, subtractVisitor}) => {
       subtractVisitor(id, category, +count);
     }
   };
+
+  const onUpdateSchool = async (school: School) => {
+    await updateSchool(school)
+  }
 
   if (!schools.length) {
     return (
@@ -48,6 +52,7 @@ const SeniorHigh: FC<Props> = ({schools, addVisitor, subtractVisitor}) => {
             onAdd={onAddChange}
             category={CategoryNames.SENIORHIGH}
             onSubtract={onSubtractChange}
+            onUpdateSchool={onUpdateSchool}
           />
         </Box>
       ))}
