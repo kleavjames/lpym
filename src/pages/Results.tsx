@@ -65,7 +65,7 @@ const Results: FC<Props> = ({
 
   return (
     <>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{ pb: 10 }}>
         <Box>
           <Stack
             direction="row"
