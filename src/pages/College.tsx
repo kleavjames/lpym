@@ -10,9 +10,10 @@ type Props = {
   schools: School[];
   addVisitor: (id: string, category: CategoryNames, count: number) => void;
   subtractVisitor: (id: string, category: CategoryNames, count: number) => void;
+  addSchool: (data: School) => void;
 }
 
-const College: FC<Props> = ({ schools, addVisitor, subtractVisitor }) => {
+const College: FC<Props> = ({ schools, addVisitor, subtractVisitor, addSchool }) => {
   const onAddChange = (id: string, category: CategoryNames, count: string) => {
     if (count) {
       addVisitor(id, category, +count);
@@ -29,6 +30,10 @@ const College: FC<Props> = ({ schools, addVisitor, subtractVisitor }) => {
     }
   };
 
+  const onUpdateSchool = async (school: School) => {
+    await addSchool(school)
+  }
+
   if (!schools.length) {
     return (
       <Box>
@@ -40,13 +45,14 @@ const College: FC<Props> = ({ schools, addVisitor, subtractVisitor }) => {
   return (
     <Stack spacing={2} sx={{ pb: 10 }}>
       {schools.map((college, i) => (
-        <Box key={college.id}>
+        <Box key={college.uid}>
           <SchoolCard
             ranking={i}
             visitor={college}
             onAdd={onAddChange}
             category={CategoryNames.COLLEGE}
             onSubtract={onSubtractChange}
+            onUpdateSchool={onUpdateSchool}
           />
         </Box>
       ))}

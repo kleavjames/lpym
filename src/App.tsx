@@ -21,6 +21,7 @@ const App = () => {
     communities,
     addVisitor,
     subtractVisitor,
+    addSchool,
   } = useSchools();
   const navigate = useNavigate();
   const user = true;
@@ -35,7 +36,7 @@ const App = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <TopBar />
+      <TopBar addSchool={addSchool} />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route
@@ -46,6 +47,7 @@ const App = () => {
                 schools={elementary}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
+                addSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -58,6 +60,7 @@ const App = () => {
                 schools={juniorHighs}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
+                addSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -70,6 +73,7 @@ const App = () => {
                 schools={seniorHighs}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
+                addSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -82,6 +86,7 @@ const App = () => {
                 schools={colleges}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
+                addSchool={addSchool}
               />
             </ProtectedRoute>
           }
@@ -94,6 +99,7 @@ const App = () => {
                 schools={communities}
                 addVisitor={addVisitor}
                 subtractVisitor={subtractVisitor}
+                addSchool={addSchool}
               />
             </ProtectedRoute>
           }

@@ -8,7 +8,7 @@ import { useCallback, useMemo } from "react";
 import { Category, CategoryNames } from "../types/category";
 import { School } from "../types/school";
 
-const dateFormatted = format(new Date(), "mmm-dd-yyyy");
+const dateFormatted = format(new Date(), "MMM-dd-yyyy");
 
 export const useSchools = () => {
   const [schools] = useCollectionData(collection(db, "schools"), {
@@ -27,7 +27,7 @@ export const useSchools = () => {
     const newSchools = (schools || []).map((school) => {
       return {
         ...school,
-        visitors: visitors?.[school.nickName]?.[CategoryNames.ELEMENTARY] ?? 0,
+        visitors: visitors?.[school.uid]?.[CategoryNames.ELEMENTARY] ?? 0,
       };
     });
     const filteredSchools = (newSchools as School[]).filter((school) =>
@@ -40,7 +40,7 @@ export const useSchools = () => {
     const newSchools = (schools || []).map((school) => {
       return {
         ...school,
-        visitors: visitors?.[school.nickName]?.[CategoryNames.JUNIORHIGH] ?? 0,
+        visitors: visitors?.[school.uid]?.[CategoryNames.JUNIORHIGH] ?? 0,
       };
     });
     const filteredSchools = (newSchools as School[]).filter((school) =>
@@ -53,7 +53,7 @@ export const useSchools = () => {
     const newSchools = (schools || []).map((school) => {
       return {
         ...school,
-        visitors: visitors?.[school.nickName]?.[CategoryNames.SENIORHIGH] ?? 0,
+        visitors: visitors?.[school.uid]?.[CategoryNames.SENIORHIGH] ?? 0,
       };
     });
     const filteredSchools = (newSchools as School[]).filter((school) =>
@@ -66,7 +66,7 @@ export const useSchools = () => {
     const newSchools = (schools || []).map((school) => {
       return {
         ...school,
-        visitors: visitors?.[school.nickName]?.[CategoryNames.COLLEGE] ?? 0,
+        visitors: visitors?.[school.uid]?.[CategoryNames.COLLEGE] ?? 0,
       };
     });
     const filteredSchools = (newSchools as School[]).filter((school) =>
@@ -79,7 +79,7 @@ export const useSchools = () => {
     const newSchools = (schools || []).map((school) => {
       return {
         ...school,
-        visitors: visitors?.[school.nickName]?.[CategoryNames.COMMUNITY] ?? 0,
+        visitors: visitors?.[school.uid]?.[CategoryNames.COMMUNITY] ?? 0,
       };
     });
     const filteredSchools = (newSchools as School[]).filter((school) =>
@@ -87,6 +87,15 @@ export const useSchools = () => {
     );
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
   }, [schools, visitors])
+
+  const addSchool = useCallback(async (school: School) => {
+    const docRef = collection(db, "schools");
+    await setDoc(doc(docRef, school.uid), {
+      uid: school.uid,
+      name: school.name,
+      categories: school.categories
+    });
+  }, [])
 
   const addVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
     const docRef = collection(db, "visitors");
@@ -109,7 +118,7 @@ export const useSchools = () => {
         [category]: count
       }
     }, {merge: true});
-  }, [dateFormatted])
+  }, [])
 
   const subtractVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
     const docRef = collection(db, "visitors");
@@ -132,7 +141,7 @@ export const useSchools = () => {
         [category]: count
       }
     }, {merge: true});
-  }, [dateFormatted])
+  }, [])
 
   return {
     elementary,
@@ -142,5 +151,6 @@ export const useSchools = () => {
     communities,
     addVisitor,
     subtractVisitor,
+    addSchool,
   }
 }

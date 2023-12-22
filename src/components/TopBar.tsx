@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import { useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -12,11 +12,9 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Categories } from "../constants/category";
-import { AddSchool } from "../types/school";
+import { AddSchool, School } from "../types/school";
 import { Category, CategoryNames } from "../types/category";
 import { nanoid } from "nanoid";
-import { useAppDispatch } from "../redux/store";
-import { addSchoolThunk } from "../redux/schoolThunks";
 
 const initState = {
   name: "",
@@ -30,9 +28,12 @@ const initState = {
   },
 };
 
-function TopBar() {
+type Props = {
+  addSchool: (data: School) => void;
+}
+
+const TopBar: FC<Props> = ({addSchool}) => {
   const location = useLocation();
-  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [schoolToAdd, setSchoolToAdd] = useState<AddSchool>(initState);
 
@@ -80,7 +81,7 @@ function TopBar() {
 
   const onHandleAddSchool = async () => {
     const categorySchool = [];
-    const {name, nickName, categories} = schoolToAdd;
+    const {name, categories} = schoolToAdd;
 
     if (categories.elementary) categorySchool.push(Category.ELEMENTARY)
     if (categories.juniorhigh) categorySchool.push(Category.JUNIORHIGH)
@@ -88,19 +89,18 @@ function TopBar() {
     if (categories.college) categorySchool.push(Category.COLLEGE)
     if (categories.community) categorySchool.push(Category.COMMUNITY)
 
-    await dispatch(addSchoolThunk({
-      id: nanoid(),
+    await addSchool({
+      uid: nanoid(),
       name,
-      nickName: nickName.toLowerCase(),
       categories: categorySchool
-    }))
+    })
 
     handleClose();
   }
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle>Register</DialogTitle>
         <DialogContent>
           <TextField
@@ -116,7 +116,7 @@ function TopBar() {
             value={schoolToAdd.name}
             onChange={handleChange}
           />
-          <TextField
+          {/* <TextField
             autoFocus
             margin="dense"
             size="small"
@@ -128,7 +128,7 @@ function TopBar() {
             variant="outlined"
             value={schoolToAdd.nickName}
             onChange={handleChange}
-          />
+          /> */}
           <FormGroup>
             <FormControlLabel
               name={CategoryNames.ELEMENTARY}

@@ -10,6 +10,7 @@ type Props = {
   schools: School[];
   addVisitor: (id: string, category: CategoryNames, count: number) => void;
   subtractVisitor: (id: string, category: CategoryNames, count: number) => void;
+  addSchool: (data: School) => void;
 }
 
 const CommunityYouth: FC<Props> = ({ schools, addVisitor, subtractVisitor }) => {
@@ -40,7 +41,7 @@ const CommunityYouth: FC<Props> = ({ schools, addVisitor, subtractVisitor }) => 
   return (
     <Stack spacing={2} sx={{ pb: 10 }}>
       {schools.map((comm, i) => (
-        <Box key={comm.id}>
+        <Box key={comm.uid}>
           <SchoolCard
             ranking={i}
             visitor={comm}
