@@ -3,19 +3,20 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
-import { useDispatch } from "react-redux";
 import { CategoryNames } from "../types/category";
-import { addVisitor, subtractVisitor } from "../redux/schoolSlice";
-import { useAppSelector } from "../redux/store";
-import { selectSeniorHighs } from "../redux/schoolSelectors";
+import { School } from "../types/school";
 
-const SeniorHigh: FC = () => {
-  const dispatch = useDispatch();
-  const schools = useAppSelector(selectSeniorHighs);
+type Props = {
+  schools: School[];
+  addVisitor: (id: string, category: CategoryNames, count: number) => void;
+  subtractVisitor: (id: string, category: CategoryNames, count: number) => void;
+  updateSchool: (data: School) => void;
+}
 
+const SeniorHigh: FC<Props> = ({schools, addVisitor, subtractVisitor, updateSchool}) => {
   const onAddChange = (id: string, category: CategoryNames, count: string) => {
     if (count) {
-      dispatch(addVisitor({ id, category, count: +count }));
+      addVisitor(id, category, +count);
     }
   };
 
@@ -25,9 +26,13 @@ const SeniorHigh: FC = () => {
     count: string
   ) => {
     if (count) {
-      dispatch(subtractVisitor({ id, category, count: +count }));
+      subtractVisitor(id, category, +count);
     }
   };
+
+  const onUpdateSchool = async (school: School) => {
+    await updateSchool(school)
+  }
 
   if (!schools.length) {
     return (
@@ -40,13 +45,14 @@ const SeniorHigh: FC = () => {
   return (
     <Stack spacing={2} sx={{ pb: 10 }}>
       {schools.map((seniorHs, i) => (
-        <Box key={seniorHs.id}>
+        <Box key={seniorHs.uid}>
           <SchoolCard
             ranking={i}
             visitor={seniorHs}
             onAdd={onAddChange}
             category={CategoryNames.SENIORHIGH}
             onSubtract={onSubtractChange}
+            onUpdateSchool={onUpdateSchool}
           />
         </Box>
       ))}

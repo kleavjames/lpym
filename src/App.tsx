@@ -10,18 +10,22 @@ import Login from "./pages/Login";
 import TopBar from "./components/TopBar";
 import Box from "@mui/material/Box";
 import JuniorHigh from "./pages/JuniorHigh";
-import { useAppDispatch } from "./redux/store";
-import { loadSchoolsThunk } from "./redux/schoolThunks";
+import { useSchools } from "./hooks/useSchools";
 
 const App = () => {
+  const {
+    elementary,
+    juniorHighs,
+    seniorHighs,
+    colleges,
+    communities,
+    addVisitor,
+    subtractVisitor,
+    addSchool,
+  } = useSchools();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const user = true;
   // const [user] = useAuthState(auth);
-
-  useEffect(() => {
-    dispatch(loadSchoolsThunk());
-  }, [dispatch])
 
   useEffect(() => {
     if (user) {
@@ -31,15 +35,20 @@ const App = () => {
   }, [user]);
 
   return (
-    <Box sx={{p: 3}}>
-      <TopBar />
+    <Box sx={{ p: 3 }}>
+      <TopBar addSchool={addSchool} />
       <Routes>
         <Route path="/" element={<Login />} />
         <Route
           path="/elementary"
           element={
             <ProtectedRoute>
-              <Elementary />
+              <Elementary
+                schools={elementary}
+                addVisitor={addVisitor}
+                subtractVisitor={subtractVisitor}
+                updateSchool={addSchool}
+              />
             </ProtectedRoute>
           }
         />
@@ -47,7 +56,12 @@ const App = () => {
           path="/junior"
           element={
             <ProtectedRoute>
-              <JuniorHigh />
+              <JuniorHigh
+                schools={juniorHighs}
+                addVisitor={addVisitor}
+                subtractVisitor={subtractVisitor}
+                updateSchool={addSchool}
+              />
             </ProtectedRoute>
           }
         />
@@ -55,7 +69,12 @@ const App = () => {
           path="/senior"
           element={
             <ProtectedRoute>
-              <SeniorHigh />
+              <SeniorHigh
+                schools={seniorHighs}
+                addVisitor={addVisitor}
+                subtractVisitor={subtractVisitor}
+                updateSchool={addSchool}
+              />
             </ProtectedRoute>
           }
         />
@@ -63,7 +82,12 @@ const App = () => {
           path="/college"
           element={
             <ProtectedRoute>
-              <College />
+              <College
+                schools={colleges}
+                addVisitor={addVisitor}
+                subtractVisitor={subtractVisitor}
+                updateSchool={addSchool}
+              />
             </ProtectedRoute>
           }
         />
@@ -71,7 +95,12 @@ const App = () => {
           path="/community"
           element={
             <ProtectedRoute>
-              <CommunityYouth />
+              <CommunityYouth
+                schools={communities}
+                addVisitor={addVisitor}
+                subtractVisitor={subtractVisitor}
+                updateSchool={addSchool}
+              />
             </ProtectedRoute>
           }
         />
@@ -79,6 +108,6 @@ const App = () => {
       <ButtomNav />
     </Box>
   );
-}
+};
 
 export default App;

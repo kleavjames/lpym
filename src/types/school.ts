@@ -2,7 +2,6 @@ import { Category, CategoryNames } from "./category";
 
 export type AddSchool = {
   name: string;
-  nickName: string;
   categories: {
     [CategoryNames.ELEMENTARY]: boolean;
     [CategoryNames.JUNIORHIGH]: boolean;
@@ -13,9 +12,8 @@ export type AddSchool = {
 }
 
 export type School = {
-  id: string;
+  uid: string;
   name: string;
-  nickName: string;
   categories: Category[]
   visitors?: number;
 }
