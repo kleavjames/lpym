@@ -41,12 +41,14 @@ const TopBar: FC<Props> = ({addSchool}) => {
     switch (location.pathname) {
       case "/elementary":
         return "Elementary";
-      case "/highschool":
-        return "High School";
+      case "/junior":
+        return "Junior High";
       case "/senior":
         return "Senior High";
       case "/college":
         return "College";
+      case "/results":
+        return "Results";
       default:
         return "Community";
     }
@@ -171,14 +173,16 @@ const TopBar: FC<Props> = ({addSchool}) => {
         <Typography variant="h4" fontWeight="bold" color="secondary">
           {category}
         </Typography>
-        <Button
-          variant="contained"
-          disableElevation
-          onClick={handleClickOpen}
-          color="secondary"
-        >
-          Register
-        </Button>
+        {category !== 'Results' && (
+          <Button
+            variant="contained"
+            disableElevation
+            onClick={handleClickOpen}
+            color="secondary"
+          >
+            Register
+          </Button>
+        )}
       </Stack>
     </>
   );
