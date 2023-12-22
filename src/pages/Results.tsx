@@ -65,7 +65,7 @@ const Results: FC<Props> = ({
 
   return (
     <>
-      <Stack spacing={3} sx={{ mx: 10 }}>
+      <Stack spacing={3}>
         <Box>
           <Stack
             direction="row"
@@ -135,14 +135,14 @@ const Results: FC<Props> = ({
               Top 3 - Elementary Level
             </Typography>
             <Divider />
-            {top3Elementary.map((elem) => (
+            {top3Elementary.map((elem, i) => (
               <Box key={elem.uid}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
                   sx={{ pb: 1 }}
                 >
-                  <Typography variant="h5">{elem.name}</Typography>
+                  <Typography variant="h5">{i + 1}. {elem.name}</Typography>
                   <Typography variant="h5">{elem.visitors}</Typography>
                 </Stack>
                 <Divider />
@@ -156,14 +156,14 @@ const Results: FC<Props> = ({
               Top 3 - Junior High Level
             </Typography>
             <Divider />
-            {top3JuniorHighs.map((junior) => (
+            {top3JuniorHighs.map((junior, i) => (
               <Box key={junior.uid}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
                   sx={{ pb: 1 }}
                 >
-                  <Typography variant="h5">{junior.name}</Typography>
+                  <Typography variant="h5">{i + 1}. {junior.name}</Typography>
                   <Typography variant="h5">{junior.visitors}</Typography>
                 </Stack>
                 <Divider />
@@ -177,14 +177,14 @@ const Results: FC<Props> = ({
               Top 3 - Senior High Level
             </Typography>
             <Divider />
-            {top3SeniorHighs.map((senior) => (
+            {top3SeniorHighs.map((senior, i) => (
               <Box key={senior.uid}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
                   sx={{ pb: 1 }}
                 >
-                  <Typography variant="h5">{senior.name}</Typography>
+                  <Typography variant="h5">{i + 1}. {senior.name}</Typography>
                   <Typography variant="h5">{senior.visitors}</Typography>
                 </Stack>
                 <Divider />
@@ -198,14 +198,14 @@ const Results: FC<Props> = ({
               Top 3 - College Level
             </Typography>
             <Divider />
-            {top3Colleges.map((college) => (
+            {top3Colleges.map((college, i) => (
               <Box key={college.uid}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
                   sx={{ pb: 1 }}
                 >
-                  <Typography variant="h5">{college.name}</Typography>
+                  <Typography variant="h5">{i + 1}. {college.name}</Typography>
                   <Typography variant="h5">{college.visitors}</Typography>
                 </Stack>
                 <Divider />
@@ -219,14 +219,14 @@ const Results: FC<Props> = ({
               Top 3 - Companies / Community
             </Typography>
             <Divider />
-            {top3Communities.map((communities) => (
+            {top3Communities.map((communities, i) => (
               <Box key={communities.uid}>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
                   sx={{ pb: 1 }}
                 >
-                  <Typography variant="h5">{communities.name}</Typography>
+                  <Typography variant="h5">{i + 1}. {communities.name}</Typography>
                   <Typography variant="h5">{communities.visitors}</Typography>
                 </Stack>
                 <Divider />
