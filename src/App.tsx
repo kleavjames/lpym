@@ -1,13 +1,11 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { ProtectedRoute } from "./hoc/ProtectedRoutes";
 import { useEffect } from "react";
-import ButtomNav from "./components/BottomNav";
 import Elementary from "./pages/Elementary";
 import SeniorHigh from "./pages/SeniorHigh";
 import College from "./pages/College";
 import CommunityYouth from "./pages/CommunityYouth";
 import Login from "./pages/Login";
-import TopBar from "./components/TopBar";
 import Box from "@mui/material/Box";
 import JuniorHigh from "./pages/JuniorHigh";
 import { useSchools } from "./hooks/useSchools";
@@ -26,7 +24,7 @@ const App = () => {
     visitorsCount,
   } = useSchools();
   const navigate = useNavigate();
-  const user = true;
+  const user = false;
   // const [user] = useAuthState(auth);
 
   useEffect(() => {
@@ -37,8 +35,8 @@ const App = () => {
   }, [user]);
 
   return (
-    <Box sx={{ p: 3 }}>
-      <TopBar addSchool={addSchool} />
+    <Box>
+      {/* <TopBar addSchool={addSchool} /> */}
       <Routes>
         <Route path="/" element={<Login />} />
         <Route
@@ -122,7 +120,7 @@ const App = () => {
           }
         />
       </Routes>
-      <ButtomNav />
+      {/* <ButtomNav /> */}
     </Box>
   );
 };
