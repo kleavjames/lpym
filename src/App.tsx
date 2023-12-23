@@ -36,7 +36,7 @@ const App = () => {
   }, [searchedSchools]);
 
   return (
-    <Grid container sx={{ flexGrow: 1, mb: 2 }} spacing={2}>
+    <Grid container sx={{ flexGrow: 1, m: 1, mb: 2 }} spacing={2}>
       <Grid xs={12}>
         <Typography level="h1" sx={{ pt: 2, pb: 1, color: "primary.700" }}>
           TALLY
