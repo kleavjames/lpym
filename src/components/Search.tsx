@@ -15,6 +15,7 @@ const Search: FC<SearchProps> = ({ debounced }) => {
       <Input
         type="search"
         placeholder="Search school / community"
+        variant="outlined"
         onChange={(e) => debounced(e.target.value)}
       />
     </FormControl>
