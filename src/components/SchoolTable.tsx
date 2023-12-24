@@ -27,7 +27,7 @@ const SchoolTable: FC<SchoolTableProps> = ({
         </thead>
         <tbody>
           {schools.map((school) => (
-            <tr>
+            <tr key={school.uid}>
               <td>{school.name}</td>
               <td>{school.visitors}</td>
             </tr>

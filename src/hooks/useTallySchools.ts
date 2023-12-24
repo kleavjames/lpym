@@ -101,6 +101,7 @@ export const useTallySchools = () => {
   }, [])
 
   return {
+    category,
     formattedSchools,
     setCategory,
     addSchool,

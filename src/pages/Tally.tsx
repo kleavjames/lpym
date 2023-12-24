@@ -11,20 +11,28 @@ import SelectCategory from "../components/SelectCategory";
 import Button from "@mui/joy/Button";
 import Stack from "@mui/joy/Stack";
 import AddEditSchoolModal from "../components/modals/AddEditSchoolModal";
-import { Category } from "../types/category";
+import { Category, CategoryNames } from "../types/category";
 import { nanoid } from "nanoid";
 import { School } from "../types/school";
 
 const Tally = () => {
-  const { formattedSchools, setCategory, addSchool,  } = useTallySchools();
+  const {
+    category,
+    formattedSchools,
+    setCategory,
+    addSchool,
+    addVisitor,
+    subtractVisitor,
+  } = useTallySchools();
 
   const [searchValue, setSearchValue] = useState("");
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
-  const nameRef = useRef('');
-  const uidSchoolRef = useRef('');
+  const nameRef = useRef("");
+  const uidSchoolRef = useRef("");
 
+  // search schools
   const searchedSchools = useMemo(() => {
     if (searchValue === "") return formattedSchools;
     return formattedSchools.filter((school) =>
@@ -39,44 +47,74 @@ const Tally = () => {
     700
   );
 
+  // add or edit school name
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     nameRef.current = event.target.value;
   };
 
-  const handleSubmit = useCallback(async (type: 'add' | 'edit') => {
-    if (type === 'add') {
-      await addSchool({
-        uid: nanoid(),
-        name: nameRef.current,
-        categories
-      })
-      setOpenAddModal(false);
-    } else {
-      await addSchool({
-        uid: uidSchoolRef.current,
-        name: nameRef.current,
-        categories
-      })
-      setOpenEditModal(false);
-    }
-    nameRef.current = '';
-    uidSchoolRef.current = '';
-  }, [addSchool, categories])
+  // submit add or edit school
+  const handleSubmit = useCallback(
+    async (type: "add" | "edit") => {
+      if (type === "add") {
+        await addSchool({
+          uid: nanoid(),
+          name: nameRef.current,
+          categories,
+        });
+        setOpenAddModal(false);
+      } else {
+        await addSchool({
+          uid: uidSchoolRef.current,
+          name: nameRef.current,
+          categories,
+        });
+        setOpenEditModal(false);
+      }
+      nameRef.current = "";
+      uidSchoolRef.current = "";
+    },
+    [addSchool, categories]
+  );
 
+  // on editing school
   const onHandleEditSchool = useCallback((school: School) => {
     nameRef.current = school.name;
     uidSchoolRef.current = school.uid;
-    setCategories(school.categories)
+    setCategories(school.categories);
     setOpenEditModal(true);
-  }, [])
+  }, []);
 
+  const handleUpdateVisitor = useCallback(
+    async (
+      id: string,
+      category: CategoryNames,
+      count: string,
+      type: "add" | "subtract"
+    ) => {
+      if (type === "add") {
+        await addVisitor(id, category, +count);
+      } else {
+        await subtractVisitor(id, category, +count);
+      }
+    },
+    [addVisitor, subtractVisitor]
+  );
+
+  // render list of schools for tally
   const renderSchoolCards = useCallback(() => {
     return searchedSchools.map((school, i) => (
       <Grid key={school.uid} xs={12} sm={6} lg={4}>
-        <TallyCard key={school.uid} school={school} ranking={i} onHandlePress={() => onHandleEditSchool(school)} />
+        <TallyCard
+          key={school.uid}
+          school={school}
+          ranking={i}
+          category={category}
+          onHandlePress={onHandleEditSchool}
+          onUpdateVisitor={handleUpdateVisitor}
+        />
       </Grid>
     ));
-  }, [onHandleEditSchool, searchedSchools]);
+  }, [category, handleUpdateVisitor, onHandleEditSchool, searchedSchools]);
 
   return (
     <>
