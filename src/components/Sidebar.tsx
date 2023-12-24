@@ -32,7 +32,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { closeSidebar } from "../utils/drawer";
 import LPYMLogo from '../assets/lpym.png';
 import BarChartIcon from '@mui/icons-material/BarChart';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 // import AspectRatio from "@mui/joy/AspectRatio";
 
 // const Toggler = ({
@@ -69,6 +69,7 @@ import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Sheet
@@ -149,7 +150,7 @@ const Sidebar = () => {
           }}
         >
           <ListItem>
-            <ListItemButton onClick={() => navigate('/')}>
+            <ListItemButton onClick={() => navigate('/')} selected={location.pathname === '/'}>
               <BarChartIcon />
               <ListItemContent>
                 <Typography level="title-sm">Tally</Typography>
@@ -158,7 +159,7 @@ const Sidebar = () => {
           </ListItem>
 
           <ListItem>
-            <ListItemButton onClick={() => navigate('/results')}>
+            <ListItemButton onClick={() => navigate('/results')} selected={location.pathname === '/results'}>
               <EmojiEventsIcon />
               <ListItemContent>
                 <Typography level="title-sm">Results</Typography>
