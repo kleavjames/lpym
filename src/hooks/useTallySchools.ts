@@ -2,13 +2,16 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import { db, collection, doc } from "../services/firebase";
-import { useMemo, useState } from "react";
+import { db, collection, doc, setDoc, getDoc } from "../services/firebase";
+import { useCallback, useMemo, useState } from "react";
 import { School } from "../types/school";
+import { format } from "date-fns/format";
 import { Category, CategoryNames } from "../types/category";
 
+const dateFormatted = format(new Date(), "MMM-dd-yyyy");
+
 export const useTallySchools = () => {
-  const [category, setCategory] = useState(Category.SENIORHIGH)
+  const [category, setCategory] = useState(Category.HIGHSCHOOL)
 
   const [schools] = useCollectionData(collection(db, "schools"), {
     snapshotListenOptions: {
@@ -23,10 +26,10 @@ export const useTallySchools = () => {
   });
 
   const formattedSchools = useMemo(() => {
-    let categoryName = CategoryNames.SENIORHIGH;
+    let categoryName = CategoryNames.HIGHSCHOOL;
 
     if (category === Category.ELEMENTARY) categoryName = CategoryNames.ELEMENTARY;
-    if (category === Category.SENIORHIGH) categoryName = CategoryNames.SENIORHIGH;
+    if (category === Category.HIGHSCHOOL) categoryName = CategoryNames.HIGHSCHOOL;
     if (category === Category.COLLEGE) categoryName = CategoryNames.COLLEGE;
     if (category === Category.COMMUNITY) categoryName = CategoryNames.COMMUNITY;
 
@@ -42,48 +45,66 @@ export const useTallySchools = () => {
     return newSchools.sort((a, b) => b.visitors! - a.visitors!) as School[];
   }, [category, schools, visitors])
 
-  const visitorsCount = useMemo(() => {
-    let totalVisitors = 0;
-    let totalElementary = 0;
-    let totalHighSchool = 0;
-    let totalCollege = 0;
-    let totalCommunity = 0;
+  const addSchool = useCallback(async (school: School) => {
+    const docRef = collection(db, "schools");
+    await setDoc(doc(docRef, school.uid), {
+      uid: school.uid,
+      name: school.name,
+      categories: school.categories
+    });
+  }, [])
 
-    if (visitors) {
-      const values = Object.values(visitors!);
-  
-      values.map(value => {
-        if (value?.[CategoryNames.ELEMENTARY]) {
-          totalVisitors += value?.[CategoryNames.ELEMENTARY];
-          totalElementary += value?.[CategoryNames.ELEMENTARY];
+  const addVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
+    const docRef = collection(db, "visitors");
+    const schoolRef = doc(docRef, dateFormatted);
+    const schoolDocRef = await getDoc(schoolRef);
+    const school = schoolDocRef.data()?.[id]
+
+    if (school?.[category]) {
+      const newCount = school[category] + count;
+      await setDoc(doc(docRef, dateFormatted), {
+        [id]: {
+          [category]: newCount
         }
-        if (value?.[CategoryNames.SENIORHIGH]) {
-          totalVisitors += value?.[CategoryNames.SENIORHIGH]
-          totalHighSchool += value?.[CategoryNames.SENIORHIGH]
-        }
-        if (value?.[CategoryNames.COLLEGE]) {
-          totalVisitors += value?.[CategoryNames.COLLEGE];
-          totalCollege += value?.[CategoryNames.COLLEGE];
-        }
-        if (value?.[CategoryNames.COMMUNITY]) {
-          totalVisitors += value?.[CategoryNames.COMMUNITY]
-          totalCommunity += value?.[CategoryNames.COMMUNITY]
-        }
-      })
+      }, {merge: true});
+      return;
     }
 
-    return {
-      totalVisitors,
-      totalElementary,
-      totalCollege,
-      totalCommunity,
-      totalHighSchool,
-    };
-  }, [visitors])
+    await setDoc(doc(docRef, dateFormatted), {
+      [id]: {
+        [category]: count
+      },
+    }, {merge: true});
+  }, [])
+
+  const subtractVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
+    const docRef = collection(db, "visitors");
+    const schoolRef = doc(docRef, dateFormatted);
+    const schoolDocRef = await getDoc(schoolRef);
+    const school = schoolDocRef.data()?.[id]
+
+    if (school?.[category]) {
+      const newCount = school[category] - count;
+      await setDoc(doc(docRef, dateFormatted), {
+        [id]: {
+          [category]: newCount
+        }
+      }, {merge: true});
+      return;
+    }
+
+    await setDoc(doc(docRef, dateFormatted), {
+      [id]: {
+        [category]: count
+      }
+    }, {merge: true});
+  }, [])
 
   return {
     formattedSchools,
     setCategory,
-    visitorsCount,
+    addSchool,
+    addVisitor,
+    subtractVisitor,
   }
 }

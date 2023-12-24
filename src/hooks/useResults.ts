@@ -3,8 +3,8 @@ import {
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import { format } from "date-fns/format";
-import { db, collection, doc, setDoc, getDoc } from "../services/firebase";
-import { useCallback, useMemo } from "react";
+import { db, collection, doc } from "../services/firebase";
+import { useMemo } from "react";
 import { Category, CategoryNames } from "../types/category";
 import { School } from "../types/school";
 
@@ -17,8 +17,8 @@ export const useResults = () => {
     }
   });
 
-  // const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
   const [visitors] = useDocumentData(doc(db, `visitors/Dec-22-2023`), {
+    // const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
     snapshotListenOptions: {
       includeMetadataChanges: true
     }
@@ -41,11 +41,11 @@ export const useResults = () => {
     const newSchools = (schools || []).map((school) => {
       return {
         ...school,
-        visitors: visitors?.[school.uid]?.[CategoryNames.SENIORHIGH] ?? 0,
+        visitors: visitors?.[school.uid]?.[CategoryNames.HIGHSCHOOL] ?? 0,
       };
     });
     const filteredSchools = (newSchools as School[]).filter((school) =>
-      school.categories.includes(Category.SENIORHIGH)
+      school.categories.includes(Category.HIGHSCHOOL)
     );
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
   }, [schools, visitors])
@@ -76,61 +76,6 @@ export const useResults = () => {
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
   }, [schools, visitors])
 
-  const addSchool = useCallback(async (school: School) => {
-    const docRef = collection(db, "schools");
-    await setDoc(doc(docRef, school.uid), {
-      uid: school.uid,
-      name: school.name,
-      categories: school.categories
-    });
-  }, [])
-
-  const addVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
-    const docRef = collection(db, "visitors");
-    const schoolRef = doc(docRef, dateFormatted);
-    const schoolDocRef = await getDoc(schoolRef);
-    const school = schoolDocRef.data()?.[id]
-
-    if (school?.[category]) {
-      const newCount = school[category] + count;
-      await setDoc(doc(docRef, dateFormatted), {
-        [id]: {
-          [category]: newCount
-        }
-      }, {merge: true});
-      return;
-    }
-
-    await setDoc(doc(docRef, dateFormatted), {
-      [id]: {
-        [category]: count
-      },
-    }, {merge: true});
-  }, [])
-
-  const subtractVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
-    const docRef = collection(db, "visitors");
-    const schoolRef = doc(docRef, dateFormatted);
-    const schoolDocRef = await getDoc(schoolRef);
-    const school = schoolDocRef.data()?.[id]
-
-    if (school?.[category]) {
-      const newCount = school[category] - count;
-      await setDoc(doc(docRef, dateFormatted), {
-        [id]: {
-          [category]: newCount
-        }
-      }, {merge: true});
-      return;
-    }
-
-    await setDoc(doc(docRef, dateFormatted), {
-      [id]: {
-        [category]: count
-      }
-    }, {merge: true});
-  }, [])
-
   const visitorsCount = useMemo(() => {
     let totalVisitors = 0;
     let totalElementary = 0;
@@ -146,9 +91,9 @@ export const useResults = () => {
           totalVisitors += value?.[CategoryNames.ELEMENTARY];
           totalElementary += value?.[CategoryNames.ELEMENTARY];
         }
-        if (value?.[CategoryNames.SENIORHIGH]) {
-          totalVisitors += value?.[CategoryNames.SENIORHIGH]
-          totalHighSchools += value?.[CategoryNames.SENIORHIGH]
+        if (value?.[CategoryNames.HIGHSCHOOL]) {
+          totalVisitors += value?.[CategoryNames.HIGHSCHOOL]
+          totalHighSchools += value?.[CategoryNames.HIGHSCHOOL]
         }
         if (value?.[CategoryNames.COLLEGE]) {
           totalVisitors += value?.[CategoryNames.COLLEGE];
@@ -175,9 +120,6 @@ export const useResults = () => {
     highSchools,
     colleges,
     communities,
-    addVisitor,
-    subtractVisitor,
-    addSchool,
     visitorsCount,
   }
 }
