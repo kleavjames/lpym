@@ -10,14 +10,15 @@ import { School } from "../types/school";
 
 const dateFormatted = format(new Date(), "MMM-dd-yyyy");
 
-export const useSchools = () => {
+export const useResults = () => {
   const [schools] = useCollectionData(collection(db, "schools"), {
     snapshotListenOptions: {
       includeMetadataChanges: true
     }
   });
 
-  const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
+  // const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
+  const [visitors] = useDocumentData(doc(db, `visitors/Dec-22-2023`), {
     snapshotListenOptions: {
       includeMetadataChanges: true
     }
@@ -36,20 +37,7 @@ export const useSchools = () => {
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
   }, [schools, visitors])
 
-  const juniorHighs = useMemo(() => {
-    const newSchools = (schools || []).map((school) => {
-      return {
-        ...school,
-        visitors: visitors?.[school.uid]?.[CategoryNames.JUNIORHIGH] ?? 0,
-      };
-    });
-    const filteredSchools = (newSchools as School[]).filter((school) =>
-      school.categories.includes(Category.JUNIORHIGH)
-    );
-    return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
-  }, [schools, visitors])
-
-  const seniorHighs = useMemo(() => {
+  const highSchools = useMemo(() => {
     const newSchools = (schools || []).map((school) => {
       return {
         ...school,
@@ -146,8 +134,7 @@ export const useSchools = () => {
   const visitorsCount = useMemo(() => {
     let totalVisitors = 0;
     let totalElementary = 0;
-    let totalJuniorHigh = 0;
-    let totalSeniorHigh = 0;
+    let totalHighSchools = 0;
     let totalCollege = 0;
     let totalCommunity = 0;
 
@@ -159,13 +146,9 @@ export const useSchools = () => {
           totalVisitors += value?.[CategoryNames.ELEMENTARY];
           totalElementary += value?.[CategoryNames.ELEMENTARY];
         }
-        if (value?.[CategoryNames.JUNIORHIGH]) {
-          totalVisitors += value?.[CategoryNames.JUNIORHIGH];
-          totalJuniorHigh += value?.[CategoryNames.JUNIORHIGH];
-        }
         if (value?.[CategoryNames.SENIORHIGH]) {
           totalVisitors += value?.[CategoryNames.SENIORHIGH]
-          totalSeniorHigh += value?.[CategoryNames.SENIORHIGH]
+          totalHighSchools += value?.[CategoryNames.SENIORHIGH]
         }
         if (value?.[CategoryNames.COLLEGE]) {
           totalVisitors += value?.[CategoryNames.COLLEGE];
@@ -183,15 +166,13 @@ export const useSchools = () => {
       totalElementary,
       totalCollege,
       totalCommunity,
-      totalJuniorHigh,
-      totalSeniorHigh,
+      totalHighSchools,
     };
   }, [visitors])
 
   return {
     elementary,
-    juniorHighs,
-    seniorHighs,
+    highSchools,
     colleges,
     communities,
     addVisitor,

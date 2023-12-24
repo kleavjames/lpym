@@ -5,8 +5,41 @@ import Card from "@mui/joy/Card"
 import CardContent from "@mui/joy/CardContent"
 import Box from "@mui/joy/Box"
 import SchoolTable from "../components/SchoolTable"
+import { useResults } from "../hooks/useResults"
+import { useMemo } from "react"
 
 const Results = () => {
+  const { visitorsCount, elementary, highSchools, colleges, communities } = useResults();
+  const {totalCollege, totalCommunity, totalElementary, totalHighSchools, totalVisitors} = visitorsCount;
+
+  const top3Elementary = useMemo(() => {
+    if (totalElementary) {
+      return elementary.slice(0, 3);
+    }
+    return [];
+  }, [elementary, totalElementary]);
+
+  const top3HighSchools = useMemo(() => {
+    if (totalHighSchools) {
+      return highSchools.slice(0, 3);
+    }
+    return [];
+  }, [highSchools, totalHighSchools]);
+
+  const top3Colleges = useMemo(() => {
+    if (totalCollege) {
+      return colleges.slice(0, 3);
+    }
+    return [];
+  }, [colleges, totalCollege]);
+
+  const top3Communities = useMemo(() => {
+    if (totalCommunity) {
+      return communities.slice(0, 3);
+    }
+    return [];
+  }, [communities, totalCommunity]);
+
   return (
     <Box sx={{mb: 2}}>
       {/* Total visitors */}
@@ -25,7 +58,7 @@ const Results = () => {
           <Card>
             <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
               <Typography level='body-lg'>TOTAL VISITORS</Typography>
-              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>98</Box>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalVisitors}</Box>
             </CardContent>
           </Card>
         </Grid>
@@ -44,7 +77,7 @@ const Results = () => {
           <Card>
             <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
               <Typography level='body-lg'>ELEMENTARY</Typography>
-              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>15</Box>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalElementary}</Box>
             </CardContent>
           </Card>
         </Grid>
@@ -52,7 +85,7 @@ const Results = () => {
           <Card>
             <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
               <Typography level='body-lg'>HIGH SCHOOL</Typography>
-              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>24</Box>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalHighSchools}</Box>
             </CardContent>
           </Card>
         </Grid>
@@ -60,7 +93,7 @@ const Results = () => {
           <Card>
             <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
               <Typography level='body-lg'>COLLEGE</Typography>
-              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>5</Box>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalCollege}</Box>
             </CardContent>
           </Card>
         </Grid>
@@ -68,7 +101,7 @@ const Results = () => {
           <Card>
             <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
               <Typography level='body-lg'>COMMUNITIES</Typography>
-              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>3</Box>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalCommunity}</Box>
             </CardContent>
           </Card>
         </Grid>
@@ -84,16 +117,16 @@ const Results = () => {
           <Divider />
         </Grid>
         <Grid xs={12} md={6}>
-          <SchoolTable />
+          <SchoolTable schools={top3Elementary} category="Elementary" />
         </Grid>
         <Grid xs={12} md={6}>
-          <SchoolTable />
+          <SchoolTable schools={top3HighSchools} category="High School" />
         </Grid>
         <Grid xs={12} md={6}>
-          <SchoolTable />
+          <SchoolTable schools={top3Colleges} category="College" />
         </Grid>
         <Grid xs={12} md={6}>
-          <SchoolTable />
+          <SchoolTable schools={top3Communities} category="Communities" />
         </Grid>
       </Grid>
     </Box>

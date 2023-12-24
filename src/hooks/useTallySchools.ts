@@ -42,8 +42,48 @@ export const useTallySchools = () => {
     return newSchools.sort((a, b) => b.visitors! - a.visitors!) as School[];
   }, [category, schools, visitors])
 
+  const visitorsCount = useMemo(() => {
+    let totalVisitors = 0;
+    let totalElementary = 0;
+    let totalHighSchool = 0;
+    let totalCollege = 0;
+    let totalCommunity = 0;
+
+    if (visitors) {
+      const values = Object.values(visitors!);
+  
+      values.map(value => {
+        if (value?.[CategoryNames.ELEMENTARY]) {
+          totalVisitors += value?.[CategoryNames.ELEMENTARY];
+          totalElementary += value?.[CategoryNames.ELEMENTARY];
+        }
+        if (value?.[CategoryNames.SENIORHIGH]) {
+          totalVisitors += value?.[CategoryNames.SENIORHIGH]
+          totalHighSchool += value?.[CategoryNames.SENIORHIGH]
+        }
+        if (value?.[CategoryNames.COLLEGE]) {
+          totalVisitors += value?.[CategoryNames.COLLEGE];
+          totalCollege += value?.[CategoryNames.COLLEGE];
+        }
+        if (value?.[CategoryNames.COMMUNITY]) {
+          totalVisitors += value?.[CategoryNames.COMMUNITY]
+          totalCommunity += value?.[CategoryNames.COMMUNITY]
+        }
+      })
+    }
+
+    return {
+      totalVisitors,
+      totalElementary,
+      totalCollege,
+      totalCommunity,
+      totalHighSchool,
+    };
+  }, [visitors])
+
   return {
     formattedSchools,
-    setCategory
+    setCategory,
+    visitorsCount,
   }
 }
