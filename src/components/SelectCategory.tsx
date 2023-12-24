@@ -16,7 +16,7 @@ const SelectCategory: FC<SelectCategoryProps> = ({setCategory}) => {
         Category
       </FormLabel>
       <Select
-        defaultValue={Category.SENIORHIGH}
+        defaultValue={Category.HIGHSCHOOL}
         slotProps={{
           button: {
             id: 'select-field-demo-button',
@@ -26,7 +26,7 @@ const SelectCategory: FC<SelectCategoryProps> = ({setCategory}) => {
         onChange={(_e, newValue) => setCategory(newValue!)}
       >
         <Option value={Category.ELEMENTARY}>Elementary</Option>
-        <Option value={Category.SENIORHIGH}>Highschool</Option>
+        <Option value={Category.HIGHSCHOOL}>High School</Option>
         <Option value={Category.COLLEGE}>College</Option>
         <Option value={Category.COMMUNITY}>Community</Option>
       </Select>

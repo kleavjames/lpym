@@ -10,9 +10,10 @@ import { FC, useCallback, useState } from "react";
 type TallyCardProps = {
   ranking: number;
   school: School;
+  onHandlePress: () => void;
 };
 
-const TallyCard: FC<TallyCardProps> = ({ school, ranking }) => {
+const TallyCard: FC<TallyCardProps> = ({ school, ranking, onHandlePress }) => {
   const [count, setCount] = useState("1");
 
   const handleNumberChange = useCallback((value: string) => {
@@ -30,9 +31,11 @@ const TallyCard: FC<TallyCardProps> = ({ school, ranking }) => {
             Rank #{ranking + 1}
           </Typography>
         )}
-        <Typography level="title-lg" sx={{ color: "primary.700" }}>
-          {school.name}
-        </Typography>
+        <span onClick={onHandlePress}>
+          <Typography level="title-lg" sx={{ color: "primary.700" }}>
+            {school.name}
+          </Typography>
+        </span>
         <Typography fontSize="xl4" fontWeight="xl" sx={{mb: 1}}>
             {school?.visitors === 0 ? '💁' : school?.visitors}
           </Typography>

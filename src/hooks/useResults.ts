@@ -13,15 +13,14 @@ const dateFormatted = format(new Date(), "MMM-dd-yyyy");
 export const useResults = () => {
   const [schools] = useCollectionData(collection(db, "schools"), {
     snapshotListenOptions: {
-      includeMetadataChanges: true
-    }
+      includeMetadataChanges: true,
+    },
   });
 
-  const [visitors] = useDocumentData(doc(db, `visitors/Dec-22-2023`), {
-    // const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
+  const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
     snapshotListenOptions: {
-      includeMetadataChanges: true
-    }
+      includeMetadataChanges: true,
+    },
   });
 
   const elementary = useMemo(() => {
@@ -35,7 +34,7 @@ export const useResults = () => {
       school.categories.includes(Category.ELEMENTARY)
     );
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
-  }, [schools, visitors])
+  }, [schools, visitors]);
 
   const highSchools = useMemo(() => {
     const newSchools = (schools || []).map((school) => {
@@ -48,7 +47,7 @@ export const useResults = () => {
       school.categories.includes(Category.HIGHSCHOOL)
     );
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
-  }, [schools, visitors])
+  }, [schools, visitors]);
 
   const colleges = useMemo(() => {
     const newSchools = (schools || []).map((school) => {
@@ -61,7 +60,7 @@ export const useResults = () => {
       school.categories.includes(Category.COLLEGE)
     );
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
-  }, [schools, visitors])
+  }, [schools, visitors]);
 
   const communities = useMemo(() => {
     const newSchools = (schools || []).map((school) => {
@@ -74,7 +73,7 @@ export const useResults = () => {
       school.categories.includes(Category.COMMUNITY)
     );
     return filteredSchools.sort((a, b) => b.visitors! - a.visitors!);
-  }, [schools, visitors])
+  }, [schools, visitors]);
 
   const visitorsCount = useMemo(() => {
     let totalVisitors = 0;
@@ -85,25 +84,25 @@ export const useResults = () => {
 
     if (visitors) {
       const values = Object.values(visitors!);
-  
-      values.map(value => {
+
+      values.map((value) => {
         if (value?.[CategoryNames.ELEMENTARY]) {
           totalVisitors += value?.[CategoryNames.ELEMENTARY];
           totalElementary += value?.[CategoryNames.ELEMENTARY];
         }
         if (value?.[CategoryNames.HIGHSCHOOL]) {
-          totalVisitors += value?.[CategoryNames.HIGHSCHOOL]
-          totalHighSchools += value?.[CategoryNames.HIGHSCHOOL]
+          totalVisitors += value?.[CategoryNames.HIGHSCHOOL];
+          totalHighSchools += value?.[CategoryNames.HIGHSCHOOL];
         }
         if (value?.[CategoryNames.COLLEGE]) {
           totalVisitors += value?.[CategoryNames.COLLEGE];
           totalCollege += value?.[CategoryNames.COLLEGE];
         }
         if (value?.[CategoryNames.COMMUNITY]) {
-          totalVisitors += value?.[CategoryNames.COMMUNITY]
-          totalCommunity += value?.[CategoryNames.COMMUNITY]
+          totalVisitors += value?.[CategoryNames.COMMUNITY];
+          totalCommunity += value?.[CategoryNames.COMMUNITY];
         }
-      })
+      });
     }
 
     return {
@@ -113,7 +112,7 @@ export const useResults = () => {
       totalCommunity,
       totalHighSchools,
     };
-  }, [visitors])
+  }, [visitors]);
 
   return {
     elementary,
@@ -121,5 +120,5 @@ export const useResults = () => {
     colleges,
     communities,
     visitorsCount,
-  }
-}
+  };
+};

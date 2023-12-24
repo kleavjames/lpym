@@ -19,7 +19,7 @@ export const useTallySchools = () => {
     }
   });
 
-  const [visitors] = useDocumentData(doc(db, `visitors/Dec-22-2023`), {
+  const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
     snapshotListenOptions: {
       includeMetadataChanges: true
     }
