@@ -7,6 +7,7 @@ import {
   setDoc,
   getDoc,
   query,
+  addDoc,
   getDocs,
   where,
   DocumentData,
@@ -35,5 +36,6 @@ export {
   query,
   getDocs,
   where,
+  addDoc,
   type DocumentData
 };

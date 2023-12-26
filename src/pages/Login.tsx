@@ -93,7 +93,7 @@ const Login = () => {
                 Love Philippines Youth Movement
               </Typography>
             </Stack>
-            <Typography level="title-lg" sx={{ mb: 3 }}>
+            <Typography level="body-lg" sx={{ mb: 3 }}>
               Login to account
             </Typography>
             <FormControl>

@@ -28,6 +28,7 @@ import Sheet from "@mui/joy/Sheet";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 // import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 // import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { closeSidebar } from "../utils/drawer";
 import LPYMLogo from "../assets/lpym.png";
@@ -182,6 +183,20 @@ const Sidebar = () => {
             </ListItemButton>
           </ListItem>
 
+          {user?.role === "superadmin" && (
+            <ListItem>
+              <ListItemButton
+                onClick={() => navigate("/accounts")}
+                selected={location.pathname === "/accounts"}
+              >
+                <ManageAccountsIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Accounts</Typography>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+          )}
+
           {/* <ListItem>
             <ListItemButton selected>
               <ShoppingCartRoundedIcon />
@@ -333,7 +348,12 @@ const Sidebar = () => {
           <Typography level="title-sm">{user?.name}</Typography>
           <Typography level="body-xs">{user?.role}</Typography>
         </Box>
-        <IconButton size="sm" variant="plain" color="neutral" onClick={onLogout}>
+        <IconButton
+          size="sm"
+          variant="plain"
+          color="neutral"
+          onClick={onLogout}
+        >
           <LogoutRoundedIcon />
         </IconButton>
       </Box>
