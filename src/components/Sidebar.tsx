@@ -27,12 +27,13 @@ import Sheet from "@mui/joy/Sheet";
 // import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 // import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded";
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 // import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { closeSidebar } from "../utils/drawer";
-import LPYMLogo from '../assets/lpym.png';
-import BarChartIcon from '@mui/icons-material/BarChart';
+import LPYMLogo from "../assets/lpym.png";
+import BarChartIcon from "@mui/icons-material/BarChart";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 // import AspectRatio from "@mui/joy/AspectRatio";
 
 // const Toggler = ({
@@ -70,6 +71,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { onLogout, user } = useAuth();
 
   return (
     <Sheet
@@ -125,7 +127,14 @@ const Sidebar = () => {
       />
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
         <Box>
-          <img src={LPYMLogo} srcSet={LPYMLogo} loading="lazy" alt="LPYM Logo" width={40} height={40} />
+          <img
+            src={LPYMLogo}
+            srcSet={LPYMLogo}
+            loading="lazy"
+            alt="LPYM Logo"
+            width={40}
+            height={40}
+          />
         </Box>
         <Typography level="title-lg">LPYM</Typography>
       </Box>
@@ -150,7 +159,10 @@ const Sidebar = () => {
           }}
         >
           <ListItem>
-            <ListItemButton onClick={() => navigate('/')} selected={location.pathname === '/'}>
+            <ListItemButton
+              onClick={() => navigate("/tally")}
+              selected={location.pathname === "/tally"}
+            >
               <BarChartIcon />
               <ListItemContent>
                 <Typography level="title-sm">Tally</Typography>
@@ -159,7 +171,10 @@ const Sidebar = () => {
           </ListItem>
 
           <ListItem>
-            <ListItemButton onClick={() => navigate('/results')} selected={location.pathname === '/results'}>
+            <ListItemButton
+              onClick={() => navigate("/results")}
+              selected={location.pathname === "/results"}
+            >
               <EmojiEventsIcon />
               <ListItemContent>
                 <Typography level="title-sm">Results</Typography>
@@ -315,10 +330,10 @@ const Sidebar = () => {
       <Divider />
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
         <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Test User</Typography>
-          <Typography level="body-xs">Administrator</Typography>
+          <Typography level="title-sm">{user?.name}</Typography>
+          <Typography level="body-xs">{user?.role}</Typography>
         </Box>
-        <IconButton size="sm" variant="plain" color="neutral">
+        <IconButton size="sm" variant="plain" color="neutral" onClick={onLogout}>
           <LogoutRoundedIcon />
         </IconButton>
       </Box>
