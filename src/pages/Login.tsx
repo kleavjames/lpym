@@ -8,30 +8,67 @@ import Grid from "@mui/joy/Grid";
 import Typography from "@mui/joy/Typography";
 import Button from "@mui/joy/Button";
 import LPYMLogo from "../assets/lpym.png";
-import { useState } from "react";
-import bcrypt from 'bcryptjs'
-
+import { useCallback, useState } from "react";
+import bcrypt from "bcryptjs";
+import { useUsers } from "../hooks/useUsers";
+import { useAuth } from "../hooks/useAuth";
 
 // const salt = bcrypt.genSaltSync(10);
 // const hashPassword = bcrypt.hashSync('password', salt);
 // store hash in your password DB.
 
+const initUserPass = {
+  username: "",
+  password: "",
+};
+
 const Login = () => {
-  const [userPass, setUserPass] = useState({
-    username: "",
-    password: "",
-  });
+  const { onLogin } = useAuth();
+  const { users } = useUsers();
+  const [userPass, setUserPass] = useState(initUserPass);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserPass((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setUserPass((prevState) => ({
+        ...prevState,
+        [event.target.name]: event.target.value,
+      }));
+    },
+    []
+  );
 
-  const handleSubmit = () => {
-    // const isCorrect = bcrypt.compareSync(userPass.password, "$2a$10$fZAc9jssySRTta0a8lHWBedDVy0w9zh54ncjXwnZh1LGsByVCRYay");
-  }
+  const handleSubmit = useCallback(() => {
+    if (!userPass.username || !userPass.password) {
+      setError("Incorrect username or password.");
+      return;
+    }
+
+    const foundUser = users?.find(
+      (user) => user.username === userPass.username
+    );
+
+    // user not in DB
+    if (!foundUser) {
+      setError("Account not found.");
+      return;
+    }
+
+    const isCorrect = bcrypt.compareSync(userPass.password, foundUser.password);
+    if (!isCorrect) {
+      setError("Incorrect username or password.");
+    } else {
+      setError(null);
+      setUserPass(initUserPass);
+      onLogin(foundUser.name, foundUser.role);
+    }
+  }, [onLogin, userPass, users]);
+
+  const onReset = useCallback(() => {
+    if (error) {
+      setError(null);
+    }
+  }, [error]);
 
   return (
     <Box
@@ -67,6 +104,7 @@ const Login = () => {
                 type="text"
                 variant="outlined"
                 onChange={handleChange}
+                onFocus={onReset}
               />
             </FormControl>
             <FormControl sx={{ mt: 1 }}>
@@ -77,9 +115,20 @@ const Login = () => {
                 type="password"
                 variant="outlined"
                 onChange={handleChange}
+                onFocus={onReset}
               />
             </FormControl>
-            <Button type="submit" onClick={handleSubmit} fullWidth sx={{ mt: 5 }}>
+            {error && (
+              <Typography level="body-sm" sx={{ mt: 3 }} color="danger">
+                {error}
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              onClick={handleSubmit}
+              fullWidth
+              sx={{ mt: 5 }}
+            >
               Login
             </Button>
           </Sheet>

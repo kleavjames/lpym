@@ -17,7 +17,7 @@ const SchoolTable: FC<SchoolTableProps> = ({
     <Sheet variant="outlined" sx={{ width: "100%", borderRadius: "sm" }}>
       <Table
         size="lg"
-        sx={{ "& tr > *:not(:first-child)": { textAlign: "right" } }}
+        sx={{ "& tr > *:not(:first-of-type)": { textAlign: "right" } }}
       >
         <thead>
           <tr>
