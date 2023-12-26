@@ -1,15 +1,25 @@
 import Box from "@mui/joy/Box";
 import Tally from "./pages/Tally";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Results from "./pages/Results";
 import Login from "./pages/Login";
 import { useAuth } from "./hooks/useAuth";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
-import { ProtectedRoute } from "./hoc/ProtectedRoutes";
+
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  if (!user) {
+    return <Navigate to="/" replace state={{ from: location }} />;
+  }
+
+  return children;
+};
 
 const App = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
 
   return (
     <Box sx={{ display: "flex", minHeight: "100dvh" }}>

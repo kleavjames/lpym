@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "../hoc/AuthProvider";
+import { AuthContext } from "../store/AuthProvider";
 
 export const useAuth = () => {
   return useContext(AuthContext);

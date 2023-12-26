@@ -10,8 +10,8 @@ import Button from "@mui/joy/Button";
 import LPYMLogo from "../assets/lpym.png";
 import { useCallback, useState } from "react";
 import bcrypt from "bcryptjs";
-import { useUsers } from "../hooks/useUsers";
 import { useAuth } from "../hooks/useAuth";
+import { useFirebase } from "../hooks/useFirebase";
 
 // const salt = bcrypt.genSaltSync(10);
 // const hashPassword = bcrypt.hashSync('password', salt);
@@ -24,7 +24,7 @@ const initUserPass = {
 
 const Login = () => {
   const { onLogin } = useAuth();
-  const { users } = useUsers();
+  const { users } = useFirebase();
   const [userPass, setUserPass] = useState(initUserPass);
   const [error, setError] = useState<string | null>(null);
 

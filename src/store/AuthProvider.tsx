@@ -7,21 +7,19 @@ type Context = {
   user: UserProps | null;
   onLogin: (name: string, role: string) => void;
   onLogout: () => void;
-  dateLoggedIn: string;
 };
 
 const AuthContext = createContext<Context>({
   user: null,
   onLogin: () => {},
   onLogout: () => {},
-  dateLoggedIn: '',
 });
 
 type AuthProps = {
   children: React.ReactNode;
 };
 
-type UserProps = {
+export type UserProps = {
   name: string;
   role: string;
   valid: string;
@@ -84,7 +82,6 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     user,
     onLogin: handleLogin,
     onLogout: handleLogout,
-    dateLoggedIn: dateFormatted,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

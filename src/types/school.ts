@@ -19,3 +19,11 @@ export type TotalSchools = {
   totalCollege: number;
   totalCommunity: number;
 }
+
+export type VisitorsCount = {
+  totalVisitors: number;
+  totalElementary: number;
+  totalCollege: number;
+  totalCommunity: number;
+  totalHighSchools: number;
+}
