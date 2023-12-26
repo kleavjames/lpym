@@ -150,7 +150,7 @@ const Sidebar = () => {
           }}
         >
           <ListItem>
-            <ListItemButton onClick={() => navigate('/')} selected={location.pathname === '/'}>
+            <ListItemButton onClick={() => navigate('/tally')} selected={location.pathname === '/'}>
               <BarChartIcon />
               <ListItemContent>
                 <Typography level="title-sm">Tally</Typography>
