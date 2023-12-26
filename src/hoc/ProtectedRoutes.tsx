@@ -4,7 +4,6 @@ import { Navigate, useLocation } from "react-router-dom";
 import React from "react";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  // const [user] = useAuthState(auth);
   const user = false;
   const location = useLocation();
 
