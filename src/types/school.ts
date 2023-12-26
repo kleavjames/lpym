@@ -1,14 +1,8 @@
-import { Category, CategoryNames } from "./category";
+import { Category } from "./category";
 
 export type AddSchool = {
   name: string;
-  categories: {
-    [CategoryNames.ELEMENTARY]: boolean;
-    [CategoryNames.JUNIORHIGH]: boolean;
-    [CategoryNames.SENIORHIGH]: boolean;
-    [CategoryNames.COLLEGE]: boolean;
-    [CategoryNames.COMMUNITY]: boolean;
-  }
+  categories: Category[]
 }
 
 export type School = {
@@ -21,8 +15,7 @@ export type School = {
 export type TotalSchools = {
   totalVisitors: number;
   totalElementary: number;
-  totalJuniorHigh: number;
-  totalSeniorHigh: number;
+  totalHighSchools: number;
   totalCollege: number;
   totalCommunity: number;
 }

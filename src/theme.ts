@@ -1,19 +1,23 @@
-import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
+import { extendTheme } from '@mui/joy/styles';
 
-// A custom theme for this app
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1769aa',
+const theme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          // 300, 400, ..., 800,
+          900: '#78350f',
+        },
+      },
     },
-    secondary: {
-      main: '#19857b',
-    },
-    error: {
-      main: red[800],
-    },
+  },
+  fontFamily: {
+    display: 'Inter, var(--joy-fontFamily-fallback)',
+    body: 'Inter, var(--joy-fontFamily-fallback)',
   },
 });
 
-export default theme;
+export default theme

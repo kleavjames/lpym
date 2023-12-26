@@ -1,33 +1,17 @@
-import { Box, Divider } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { FC, useMemo } from "react";
-import { School, TotalSchools } from "../types/school";
+import Grid from "@mui/joy/Grid"
+import Divider from "@mui/joy/Divider"
+import Typography from "@mui/joy/Typography"
+import Card from "@mui/joy/Card"
+import CardContent from "@mui/joy/CardContent"
+import Box from "@mui/joy/Box"
+import SchoolTable from "../components/SchoolTable"
+import { useResults } from "../hooks/useResults"
+import { useMemo } from "react"
 
-type Props = {
-  visitorsCount: TotalSchools;
-  elementary: School[];
-  juniorHighs: School[];
-  seniorHighs: School[];
-  colleges: School[];
-  communities: School[];
-};
+const Results = () => {
+  const { visitorsCount, elementary, highSchools, colleges, communities } = useResults();
+  const {totalCollege, totalCommunity, totalElementary, totalHighSchools, totalVisitors} = visitorsCount;
 
-const Results: FC<Props> = ({
-  visitorsCount: {
-    totalVisitors,
-    totalCollege,
-    totalCommunity,
-    totalElementary,
-    totalJuniorHigh,
-    totalSeniorHigh,
-  },
-  juniorHighs,
-  elementary,
-  seniorHighs,
-  colleges,
-  communities,
-}) => {
   const top3Elementary = useMemo(() => {
     if (totalElementary) {
       return elementary.slice(0, 3);
@@ -35,19 +19,12 @@ const Results: FC<Props> = ({
     return [];
   }, [elementary, totalElementary]);
 
-  const top3JuniorHighs = useMemo(() => {
-    if (totalJuniorHigh) {
-      return juniorHighs.slice(0, 3);
+  const top3HighSchools = useMemo(() => {
+    if (totalHighSchools) {
+      return highSchools.slice(0, 3);
     }
     return [];
-  }, [juniorHighs, totalJuniorHigh]);
-
-  const top3SeniorHighs = useMemo(() => {
-    if (totalSeniorHigh) {
-      return seniorHighs.slice(0, 3);
-    }
-    return [];
-  }, [seniorHighs, totalSeniorHigh]);
+  }, [highSchools, totalHighSchools]);
 
   const top3Colleges = useMemo(() => {
     if (totalCollege) {
@@ -64,179 +41,96 @@ const Results: FC<Props> = ({
   }, [communities, totalCommunity]);
 
   return (
-    <>
-      <Stack spacing={3} sx={{ pb: 10 }}>
-        <Box>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography variant="h5">Overall Visitors</Typography>
-            <Typography variant="h3" color="primary" fontWeight="bold">
-              {totalVisitors}
-            </Typography>
-          </Stack>
-        </Box>
-        <Stack spacing={1}>
-          <Typography color="primary" fontWeight="bold">
-            Total Visitors By Category
+    <Box sx={{mb: 2}}>
+      {/* Total visitors */}
+      <Grid
+        container
+        sx={{ flexGrow: 1, m: 1, mt: { xs: 7, md: 0 } }}
+        spacing={2}
+      >
+        <Grid xs={12}>
+          <Typography level="h1" sx={{ pb: 1, color: "primary.700" }}>
+            Results
           </Typography>
+          <Divider sx={{ mb: 2 }} />
+        </Grid>
+        <Grid xs={12} md={6}>
+          <Card>
+            <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
+              <Typography level='body-lg'>TOTAL VISITORS</Typography>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalVisitors}</Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      {/* Total visitors by category */}
+      <Grid
+        container
+        sx={{ flexGrow: 1, mx: 1, mt: 2 }}
+        spacing={2}
+      >
+        <Grid xs={12}>
+          <Typography>Total visitors by category</Typography>
           <Divider />
-          {totalElementary !== 0 && (
-            <>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h5">Elementary</Typography>
-                <Typography variant="h5">{totalElementary}</Typography>
-              </Stack>
-              <Divider />
-            </>
-          )}
-          {totalJuniorHigh !== 0 && (
-            <>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h5">Junior High</Typography>
-                <Typography variant="h5">{totalJuniorHigh}</Typography>
-              </Stack>
-              <Divider />
-            </>
-          )}
-          {totalSeniorHigh !== 0 && (
-            <>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h5">Senior High</Typography>
-                <Typography variant="h5">{totalSeniorHigh}</Typography>
-              </Stack>
-              <Divider />
-            </>
-          )}
-          {totalCollege !== 0 && (
-            <>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h5">College</Typography>
-                <Typography variant="h5">{totalCollege}</Typography>
-              </Stack>
-              <Divider />
-            </>
-          )}
-          {totalCommunity !== 0 && (
-            <>
-              <Stack direction="row" justifyContent="space-between">
-                <Typography variant="h5">Community</Typography>
-                <Typography variant="h5">{totalCommunity}</Typography>
-              </Stack>
-              <Divider />
-            </>
-          )}
-        </Stack>
-        {totalElementary !== 0 && (
-          <Stack spacing={1}>
-            <Typography color="primary" fontWeight="bold">
-              Top 3 - Elementary Level
-            </Typography>
-            <Divider />
-            {top3Elementary.map((elem, i) => (
-              <Box key={elem.uid}>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{ pb: 1 }}
-                >
-                  <Typography variant="h5">{i + 1}. {elem.name}</Typography>
-                  <Typography variant="h5">{elem.visitors}</Typography>
-                </Stack>
-                <Divider />
-              </Box>
-            ))}
-          </Stack>
-        )}
-        {totalJuniorHigh !== 0 && (
-          <Stack spacing={1}>
-            <Typography color="primary" fontWeight="bold">
-              Top 3 - Junior High Level
-            </Typography>
-            <Divider />
-            {top3JuniorHighs.map((junior, i) => (
-              <Box key={junior.uid}>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{ pb: 1 }}
-                >
-                  <Typography variant="h5">{i + 1}. {junior.name}</Typography>
-                  <Typography variant="h5">{junior.visitors}</Typography>
-                </Stack>
-                <Divider />
-              </Box>
-            ))}
-          </Stack>
-        )}
-        {totalSeniorHigh !== 0 && (
-          <Stack spacing={1}>
-            <Typography color="primary" fontWeight="bold">
-              Top 3 - Senior High Level
-            </Typography>
-            <Divider />
-            {top3SeniorHighs.map((senior, i) => (
-              <Box key={senior.uid}>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{ pb: 1 }}
-                >
-                  <Typography variant="h5">{i + 1}. {senior.name}</Typography>
-                  <Typography variant="h5">{senior.visitors}</Typography>
-                </Stack>
-                <Divider />
-              </Box>
-            ))}
-          </Stack>
-        )}
-        {totalCollege !== 0 && (
-          <Stack spacing={1}>
-            <Typography color="primary" fontWeight="bold">
-              Top 3 - College Level
-            </Typography>
-            <Divider />
-            {top3Colleges.map((college, i) => (
-              <Box key={college.uid}>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{ pb: 1 }}
-                >
-                  <Typography variant="h5">{i + 1}. {college.name}</Typography>
-                  <Typography variant="h5">{college.visitors}</Typography>
-                </Stack>
-                <Divider />
-              </Box>
-            ))}
-          </Stack>
-        )}
-        {totalCommunity !== 0 && (
-          <Stack spacing={1}>
-            <Typography color="primary" fontWeight="bold">
-              Top 3 - Companies / Community
-            </Typography>
-            <Divider />
-            {top3Communities.map((communities, i) => (
-              <Box key={communities.uid}>
-                <Stack
-                  direction="row"
-                  justifyContent="space-between"
-                  sx={{ pb: 1 }}
-                >
-                  <Typography variant="h5">{i + 1}. {communities.name}</Typography>
-                  <Typography variant="h5">{communities.visitors}</Typography>
-                </Stack>
-                <Divider />
-              </Box>
-            ))}
-          </Stack>
-        )}
-      </Stack>
-    </>
-  );
-};
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
+              <Typography level='body-lg'>ELEMENTARY</Typography>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalElementary}</Box>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
+              <Typography level='body-lg'>HIGH SCHOOL</Typography>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalHighSchools}</Box>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
+              <Typography level='body-lg'>COLLEGE</Typography>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalCollege}</Box>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid xs={12} sm={6} md={3}>
+          <Card>
+            <CardContent sx={{ alignItems: "center", textAlign: "center" }}>
+              <Typography level='body-lg'>COMMUNITIES</Typography>
+              <Box sx={{ fontSize: 50, fontWeight: '800', color: 'primary.700'}}>{totalCommunity}</Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+      {/* Top 3 schools per category */}
+      <Grid
+        container
+        sx={{ flexGrow: 1, mx: 1, mt: 2 }}
+        spacing={2}
+      >
+        <Grid xs={12}>
+          <Typography>Top 3 schools / communities by category</Typography>
+          <Divider />
+        </Grid>
+        <Grid xs={12} md={6}>
+          <SchoolTable schools={top3Elementary} category="Elementary" />
+        </Grid>
+        <Grid xs={12} md={6}>
+          <SchoolTable schools={top3HighSchools} category="High School" />
+        </Grid>
+        <Grid xs={12} md={6}>
+          <SchoolTable schools={top3Colleges} category="College" />
+        </Grid>
+        <Grid xs={12} md={6}>
+          <SchoolTable schools={top3Communities} category="Communities" />
+        </Grid>
+      </Grid>
+    </Box>
+  )
+}
 
-export default Results;
+export default Results
