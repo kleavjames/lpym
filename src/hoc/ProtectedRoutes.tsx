@@ -1,10 +1,9 @@
 import { Navigate, useLocation } from "react-router-dom";
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import {auth} from '../firebase';
 import React from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const user = false;
+  const { user } = useAuth();
   const location = useLocation();
 
   if (!user) {
