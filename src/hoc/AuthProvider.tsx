@@ -1,16 +1,20 @@
 import { FC, createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns/format";
+import { isSameDay } from "date-fns/isSameDay";
 
 type Context = {
   user: UserProps | null;
   onLogin: (name: string, role: string) => void;
   onLogout: () => void;
+  dateLoggedIn: string;
 };
 
 const AuthContext = createContext<Context>({
   user: null,
   onLogin: () => {},
   onLogout: () => {},
+  dateLoggedIn: '',
 });
 
 type AuthProps = {
@@ -20,7 +24,10 @@ type AuthProps = {
 type UserProps = {
   name: string;
   role: string;
+  valid: string;
 };
+
+const dateFormatted = format(new Date(), "MMM-dd-yyyy");
 
 const AuthProvider: FC<AuthProps> = ({ children }) => {
   const navigate = useNavigate();
@@ -28,9 +35,15 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
   const [user, setUser] = useState<UserProps | null>(null);
 
   const onLoadUser = useCallback(() => {
-    const parsedUser = localStorage.getItem("user");
-    if (parsedUser) {
-      setUser(JSON.parse(parsedUser));
+    const loggedInUser = localStorage.getItem("user");
+    if (loggedInUser) {
+      const parsed: UserProps = JSON.parse(loggedInUser);
+      if (!isSameDay(parsed.valid, dateFormatted)) {
+        handleLogout();
+        return;
+      }
+
+      setUser(parsed);
       navigate("/tally", { replace: true });
     } else {
       setUser(null);
@@ -49,11 +62,13 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
         JSON.stringify({
           name: username,
           role,
+          valid: dateFormatted,
         })
       );
       setUser({
         name: username,
         role,
+        valid: dateFormatted,
       });
       navigate("/tally", { replace: true });
     },
@@ -69,6 +84,7 @@ const AuthProvider: FC<AuthProps> = ({ children }) => {
     user,
     onLogin: handleLogin,
     onLogout: handleLogout,
+    dateLoggedIn: dateFormatted,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

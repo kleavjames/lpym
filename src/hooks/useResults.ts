@@ -2,22 +2,21 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
-import { format } from "date-fns/format";
 import { db, collection, doc } from "../services/firebase";
 import { useMemo } from "react";
 import { Category, CategoryNames } from "../types/category";
 import { School } from "../types/school";
-
-const dateFormatted = format(new Date(), "MMM-dd-yyyy");
+import { useAuth } from "./useAuth";
 
 export const useResults = () => {
+  const {dateLoggedIn} = useAuth();
   const [schools] = useCollectionData(collection(db, "schools"), {
     snapshotListenOptions: {
       includeMetadataChanges: true,
     },
   });
 
-  const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
+  const [visitors] = useDocumentData(doc(db, `visitors/${dateLoggedIn}`), {
     snapshotListenOptions: {
       includeMetadataChanges: true,
     },

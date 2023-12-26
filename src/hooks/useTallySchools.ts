@@ -5,12 +5,11 @@ import {
 import { db, collection, doc, setDoc, getDoc } from "../services/firebase";
 import { useCallback, useMemo, useState } from "react";
 import { School } from "../types/school";
-import { format } from "date-fns/format";
 import { Category, CategoryNames } from "../types/category";
-
-const dateFormatted = format(new Date(), "MMM-dd-yyyy");
+import { useAuth } from "./useAuth";
 
 export const useTallySchools = () => {
+  const {dateLoggedIn} = useAuth();
   const [category, setCategory] = useState(Category.HIGHSCHOOL)
 
   const [schools] = useCollectionData(collection(db, "schools"), {
@@ -19,7 +18,7 @@ export const useTallySchools = () => {
     }
   });
 
-  const [visitors] = useDocumentData(doc(db, `visitors/${dateFormatted}`), {
+  const [visitors] = useDocumentData(doc(db, `visitors/${dateLoggedIn}`), {
     snapshotListenOptions: {
       includeMetadataChanges: true
     }
@@ -56,13 +55,13 @@ export const useTallySchools = () => {
 
   const addVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
     const docRef = collection(db, "visitors");
-    const schoolRef = doc(docRef, dateFormatted);
+    const schoolRef = doc(docRef, dateLoggedIn);
     const schoolDocRef = await getDoc(schoolRef);
     const school = schoolDocRef.data()?.[id]
 
     if (school?.[category]) {
       const newCount = school[category] + count;
-      await setDoc(doc(docRef, dateFormatted), {
+      await setDoc(doc(docRef, dateLoggedIn), {
         [id]: {
           [category]: newCount
         }
@@ -70,22 +69,22 @@ export const useTallySchools = () => {
       return;
     }
 
-    await setDoc(doc(docRef, dateFormatted), {
+    await setDoc(doc(docRef, dateLoggedIn), {
       [id]: {
         [category]: count
       },
     }, {merge: true});
-  }, [])
+  }, [dateLoggedIn])
 
   const subtractVisitor = useCallback(async (id: string, category: CategoryNames, count: number) => {
     const docRef = collection(db, "visitors");
-    const schoolRef = doc(docRef, dateFormatted);
+    const schoolRef = doc(docRef, dateLoggedIn);
     const schoolDocRef = await getDoc(schoolRef);
     const school = schoolDocRef.data()?.[id]
 
     if (school?.[category]) {
       const newCount = school[category] - count;
-      await setDoc(doc(docRef, dateFormatted), {
+      await setDoc(doc(docRef, dateLoggedIn), {
         [id]: {
           [category]: newCount
         }
@@ -93,12 +92,12 @@ export const useTallySchools = () => {
       return;
     }
 
-    await setDoc(doc(docRef, dateFormatted), {
+    await setDoc(doc(docRef, dateLoggedIn), {
       [id]: {
         [category]: count
       }
     }, {merge: true});
-  }, [])
+  }, [dateLoggedIn])
 
   return {
     category,
